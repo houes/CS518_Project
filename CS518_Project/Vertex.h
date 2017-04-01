@@ -18,4 +18,11 @@ public:
 	void setIncidentEdge(Edge* e){ IncidentEdge = e; }
 	Edge* get_incidentEdge(){ return IncidentEdge; }
 
+	bool operator==(const Vertex& other)
+	{
+		if (this->getX() == other.getX() && this->getY() == other.getY())
+			return true;
+		else
+			return false;
+	}
 };

@@ -15,8 +15,8 @@ public:
 	Point2D(double x_, double y_) { x = x_; y = y_; }
 
 	// getters
-	double getX() { return x; }
-	double getY() { return y; }
+	double getX() const { return x; }
+	double getY() const { return y; }
 
 	//operator
 	Point2D operator*(double n)  { return Point2D(x*n, y*n); }

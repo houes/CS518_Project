@@ -19,26 +19,29 @@ void Face::print() const
 		e = e->get_next();
 		} while (e != nullptr && e != s);
 	else
-		cout << "NULL";
-
-	cout << endl;
+		cout << "NULL"<<endl;
 
 	cout << "inner edges: " << endl;
 	// traverse edges of each hole of a face
-	for (int i = 0; i < InnerComponents.size(); i++)
-	{
-		s = InnerComponents.at(i);
-		e = s;
-
-		if (e!=nullptr)
-		do
+	if (InnerComponents.empty())
+		cout << "NULL";
+	else
+		for (int i = 0; i < InnerComponents.size(); i++)
 		{
-			e->get_origin()->print();
-			e = e->get_next();
-		} while (e != nullptr && e != s);
+			s = InnerComponents.at(i);
+			e = s;
 
-		cout << endl;
+			if (e!=nullptr)
+			do
+			{
+				e->get_origin()->print();
+				e = e->get_next();
+			} while (e != nullptr && e != s);
 
-	}
+			cout << endl;
+
+		}
+
+	cout << endl;
 
 }

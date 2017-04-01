@@ -31,6 +31,7 @@ public:
 	Edge*	get_prev()	const	{ return Prev; }
 	Face*	get_incidentFace() const { return IncidentFace; }
 
-	 Vertex* get_destination(){ return get_twin()->get_origin(); }
+	Vertex* get_destination(){ return get_twin()->get_origin(); }
 
+	bool isOnOuterComponent();
 };

@@ -91,8 +91,65 @@ void DCEL::add_edge(const Edge& e)
 	//TODO
 }
 
-void DCEL::split_face(Edge* e, Vertex* v)
+void DCEL::split_face(Edge* h, Vertex* v)
 {
+	// create the edge connecting v and h.destination
+	// pre-condition: (1) the vertices v and h.destination should be in the same face
+	//				  (2) the vertices v and h.destination are not adjacent
+	// we consider two cases:
+	//				  (a) h is on the outercomponent
+	//				  (b) h is on the innercomponents
+	
+	Face* f0 = h->get_incidentFace();
+
+	faces.push_back(Face());
+	Face* f1 = &faces.back();
+	faces.push_back(Face());
+	Face* f2 = &faces.back();
+	edges.push_back(Edge());
+	Edge* h1 = &edges.back();
+	edges.push_back(Edge());
+	Edge* h2 = &edges.back();
+
+	f1->setOuterComponent(h1);
+	if (h->isOnOuterComponent()) // distinguish between cases (a) and (b)
+		f2->setOuterComponent(h2);
+	else
+		f2->addInnerComponent(h2);
+	h1->set_twin(h2);
+	h2->set_twin(h1);
+	h1->set_origin(h->get_destination());
+	h2->set_origin(v);
+	h2->set_next(h->get_next());
+	h2->get_next()->set_prev(h2);
+	h1->set_prev(h);
+	h->set_next(h1);
+	Edge* i = h2;
+	while (1)
+	{
+		i->set_incidentface(f2);
+		if (i->get_destination() == v)
+			break;
+		i = i->get_next();
+	}
+	h1->set_next(i->get_next());
+	h1->get_next()->set_prev(h1);
+	i->set_next(h2);
+	h2->set_prev(i);
+	i = h1;
+	while (1)
+	{
+		i->set_incidentface(f1);
+		i = i->get_next();
+		if (i->get_destination() == v)
+			break;
+	}
+
+	// delete f0
+	list<Face>::iterator it = faces.begin();
+	while (&*it != f0)
+		it++;
+	faces.erase(it);
 
 }
 
@@ -103,8 +160,9 @@ void DCEL::print()
 	int idx = 0;
 	while (it != faces.end())
 	{
-		cout <<"Face #"<< idx++ << " ";
+		cout <<"Face #"<< idx++ << endl;
 		it->print();
+		cout << endl;
 		++it;
 	}
 

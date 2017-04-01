@@ -37,6 +37,7 @@ void draw_DCEL(const DCEL& data)
 	// need to modify the coordinates of vertices to fit to screen, range to [0,1]
 
 	glLineWidth(2.0);
+	glPointSize(5);
 	glColor3f(0, 0, 0);
 
 	const list<Face>* faces = data.get_faces();
@@ -49,6 +50,8 @@ void draw_DCEL(const DCEL& data)
 		Edge* s = it->get_outerComponent();
 		Edge* e = s;
 		
+		// 1.draw the outerComponent of this face
+		// 1.1 line segments
 		glBegin(GL_LINES);
 		if (e!=nullptr)
 		do
@@ -63,24 +66,53 @@ void draw_DCEL(const DCEL& data)
 		} while (e != nullptr && e != s);
 		glEnd();
 
-		// traverse edges of each hole of a face
+		// 1.2 Points
+		glBegin(GL_POINTS);
+			e = s;
+			if (e != nullptr)
+			do
+			{
+				Vertex* v = e->get_origin();
+
+				glVertex2f(v->getX(), v->getY());
+
+				e = e->get_next();
+			} while (e != nullptr && e != s);
+		glEnd();
+
+		// 2.draw the inner components of this face (holes)
 		for (int i = 0; i < it->get_innerComponent().size(); i++)
 		{
 			s = it->get_innerComponent().at(i);
 			e = s;
 
+			// 2.1 line segments
 			glBegin(GL_LINES);
-			if (e != nullptr)
-			do
-			{
-				Vertex* v1 = e->get_origin();
-				Vertex* v2 = e->get_destination();
+				if (e != nullptr)
+				do
+				{
+					Vertex* v1 = e->get_origin();
+					Vertex* v2 = e->get_destination();
 
-				glVertex2f(v1->getX(), v1->getY());
-				glVertex2f(v2->getX(), v2->getY());
+					glVertex2f(v1->getX(), v1->getY());
+					glVertex2f(v2->getX(), v2->getY());
 				
-				e = e->get_next();
-			} while (e != nullptr && e != s);
+					e = e->get_next();
+				} while (e != nullptr && e != s);
+			glEnd();
+
+			// 2.2 points
+			glBegin(GL_POINTS);
+				e = s;
+				if (e != nullptr)
+				do
+				{
+					Vertex* v = e->get_origin();
+
+					glVertex2f(v->getX(), v->getY());
+
+					e = e->get_next();
+				} while (e != nullptr && e != s);
 			glEnd();
 		}
 

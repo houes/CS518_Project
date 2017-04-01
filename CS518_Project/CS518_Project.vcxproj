@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="DCEL.cpp" />
     <ClCompile Include="draw_objects.cpp" />
+    <ClCompile Include="Edge.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="helperFunctions.cpp" />
     <ClCompile Include="main.cpp" />
