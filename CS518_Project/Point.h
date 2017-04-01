@@ -25,5 +25,5 @@ public:
 	void   scaleX(double s) { x = x/s; }
 	void   scaleY(double s) { y = y/s; }
 
-	void print() { cout << "(" << x << "," << y << ")" << endl; }
+	void print() const { cout << "(" << x << "," << y << ")" << endl; }
 };

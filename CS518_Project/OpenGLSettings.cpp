@@ -1,9 +1,11 @@
+#pragma once
 #include "OpenGLSettings.h"
 #include "draw_objects.h"
+#include "DCEL.h"
 
 using namespace std;
 
-extern vector<Point2D> inputPts;
+extern DCEL data;
 
 
 /**
@@ -46,7 +48,10 @@ void draw_scene(void)
 	double cran[] { 0, 1, 1 };
 	double* colors[] = {red,green,blue,yellow,cran};
 	
-	draw_points(inputPts);
+	draw_DCEL(data);
+
+	//vector<Point2D> pts{ Point2D(0, 0), Point2D(1, 1)};
+	//draw_points(pts);
 }
 
 /**

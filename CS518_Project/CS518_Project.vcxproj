@@ -153,18 +153,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DCEL.h" />
     <ClInclude Include="draw_objects.h" />
+    <ClInclude Include="Edge.h" />
+    <ClInclude Include="Face.h" />
     <ClInclude Include="helperFunctions.h" />
     <ClInclude Include="OpenGLSettings.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="testcases.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DCEL.cpp" />
     <ClCompile Include="draw_objects.cpp" />
+    <ClCompile Include="Face.cpp" />
     <ClCompile Include="helperFunctions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpenGLSettings.cpp" />
     <ClCompile Include="testcases.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

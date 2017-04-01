@@ -8,13 +8,13 @@
 #pragma once
 #include <vector>
 #include <iostream>
-#include "Point.h"
 #include "OpenGLSettings.h"
 #include "testcases.h"
+#include "DCEL.h"
 
 using namespace std;
 
-vector<Point2D>	inputPts;
+DCEL data;
 
 
 int main(int argc, char** argv)
@@ -41,11 +41,8 @@ int main(int argc, char** argv)
 	}
 	*/
 
-	// verify points
-	cout << "The initial control points are:" << endl;
-	for (int i = 0; i < inputPts.size(); i++)
-		inputPts[i].print();
-
+	// verify the data
+	data.print();
 
 	// OpenGL initialize
 	glutInit(&argc, argv);

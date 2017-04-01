@@ -1,23 +1,19 @@
 #pragma once
-#include"Point.h"
-#include<vector>
+#include "DCEL.h"
+#include <vector>
 
-extern vector<Point2D>	inputPts;
+extern DCEL	data;
 
 void runTestCases(int caseID)
 {
-	// test case 1
-	vector<Point2D> ctrPts1({ Point2D(0,0),    Point2D(1,0),  Point2D(0.9,1), Point2D(2.5,1),
-		Point2D(3,-0.5), Point2D(2,-1), Point2D(1,-0.7) });
+	data.create_an_edge(Vertex(0.1, 0.1), Vertex(0.15, 0.7));
 
-	// tests begins
-	switch (caseID)
-	{
-	case 1:
-		/* case 1*/
-		inputPts = ctrPts1;
-		break;
-		default:
-			break;
-	}
+	data.add_vertex_at(Vertex(0.3, 0.8));
+	data.add_vertex_at(Vertex(0.6, 0.7));
+	data.add_vertex_at(Vertex(0.7, 0.5));
+	data.add_vertex_at(Vertex(0.5, 0.6));
+	data.add_vertex_at(Vertex(0.2, 0.4));
+	data.add_vertex_at(Vertex(0.4, 0.3));
+	data.add_vertex_at(Vertex(0.3, 0.2));
+
 }
