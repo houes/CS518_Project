@@ -1,5 +1,10 @@
+#pragma once
 #include "helperFunctions.h"
 #include <algorithm>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+
 
 // helper function
 bool smallerX(Point2D p1, Point2D p2)
@@ -86,4 +91,25 @@ vector<Point2D> get_scaled_pts_set(const vector<Point2D>& input)
 	scalePointSet(input, output);
 
 	return output;
+}
+
+void generate_an_arrow_head(double beta, double length, Point2D ps, Point2D pt, Point2D& p1, Point2D& p2)
+{
+	// input:
+	// bepta: half of the opening angle of the arrow head, in degree
+	// length: the length of the arrow head
+	// output:
+	// the 2 points of the arrrow head: p2,p3 (originate from ps)
+
+	Vector v(ps.getX() - pt.getX(), ps.getY() - pt.getY());
+	v.normalize();
+	v = v*length;
+	Vector v1, v2;
+	v1 = v2 = v;
+
+	v1.rotate_ccw(beta);
+	v2.rotate_ccw(-1*beta);
+
+	p1 = pt + v1;
+	p2 = pt + v2;
 }

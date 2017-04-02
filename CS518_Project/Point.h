@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Vector.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ public:
 	Point2D operator-(Point2D p) { return Point2D(x-p.x, y-p.y); }
 	void   scaleX(double s) { x = x/s; }
 	void   scaleY(double s) { y = y/s; }
+
+	Point2D operator+(const Vector& v){ return Point2D(x + v.getX(), y + v.getY()); }
 
 	void print() const { cout << "(" << x << "," << y << ")" << endl; }
 };

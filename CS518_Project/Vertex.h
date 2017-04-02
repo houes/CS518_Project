@@ -25,4 +25,6 @@ public:
 		else
 			return false;
 	}
+
+	Vector  operator-(const Vertex& other) { return Vector(getX() - other.getX(), getY() - other.getY()); }
 };
