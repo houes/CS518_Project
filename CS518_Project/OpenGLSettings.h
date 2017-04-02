@@ -18,3 +18,5 @@ void draw_scene(void);
 void display(void);
 
 void init (void);
+
+void keyboard(unsigned char key, int x, int y);

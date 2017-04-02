@@ -19,6 +19,15 @@ void runTestCases(int caseID)
 
 	data.split_face(data.get_an_edge_at(1), const_cast<Vertex*>(&data.get_vertices()->back()));
 
+	data.split_face(data.get_an_edge_at(5), data.get_an_vertex_at(5));
+
+	data.add_vertex_at(Vertex(0.4, 0.2), data.get_an_edge_at(10));
+
+	data.add_vertex_at(Vertex(0.9,0.9), data.get_an_edge_at(4));
+
+	data.split_face(data.get_an_edge_at(15), data.get_an_vertex_at(6));
+
+	data.split_face(data.get_an_edge_at(14), data.get_an_vertex_at(3));
 
 	// case 2:
 	//data.create_an_edge(Vertex(0.1, 0.1), Vertex(0.15, 0.7));

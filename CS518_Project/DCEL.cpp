@@ -186,3 +186,22 @@ Edge* DCEL::get_an_edge_at(int pos)
 
 	return &*it;
 }
+
+Vertex* DCEL::get_an_vertex_at(int pos)
+{
+	if (pos<0 || pos>vertices.size() - 1)
+		throw invalid_argument("pos out of range");
+
+	list<Vertex>::iterator it = vertices.begin();
+
+	int i = 0;
+	while (i++ < pos)
+	{
+		if (it != vertices.end())
+			it++;
+		else
+			throw invalid_argument("pos out of range");
+	}
+
+	return &*it;
+}

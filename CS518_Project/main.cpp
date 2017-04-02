@@ -15,7 +15,8 @@
 using namespace std;
 
 DCEL data;
-
+int the_n_Face;
+int the_n_Edge;
 
 int main(int argc, char** argv)
 {
@@ -52,6 +53,7 @@ int main(int argc, char** argv)
 	glutCreateWindow("CS518-Project:  Polygon Triangulation");
 	init();
 	glutDisplayFunc(display);
+	glutKeyboardFunc(keyboard);
 	glutMainLoop();
 
 	return 0;

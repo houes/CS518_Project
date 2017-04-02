@@ -38,8 +38,9 @@ public:
 
 	void print();
 
-	Edge* get_an_edge_at(int pos);// get a pointer to an edge in the list at pos
-
+	Edge*	get_an_edge_at(int pos);   // get a pointer to an edge   in the list at pos
+	Vertex* get_an_vertex_at(int pos); // get a pointer to an vertex in the list at pos
+	
 	// TODO:
 	// DCEL* get_copy();
 

@@ -22,6 +22,9 @@ using namespace std;
 
 void draw_DCEL(const DCEL& data);
 
+void highlight_edge(const DCEL& data, int nFace, int nEdge);
+
 void draw_points(const vector<Point2D>& input_pts);
 
+void draw_2D_text(int EdgeIdx, int VertexIdx);
 

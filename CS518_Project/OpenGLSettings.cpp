@@ -6,7 +6,8 @@
 using namespace std;
 
 extern DCEL data;
-
+extern int the_n_Face;
+extern int the_n_Edge;
 
 /**
  * @brief this initializes the camera.
@@ -50,6 +51,8 @@ void draw_scene(void)
 	
 	draw_DCEL(data);
 
+	highlight_edge(data, the_n_Face, the_n_Edge);
+
 	//vector<Point2D> pts{ Point2D(0, 0), Point2D(1, 1)};
 	//draw_points(pts);
 }
@@ -87,10 +90,34 @@ void display(void)
  */
 void init (void)
 {
+	// global variables initilization
+	the_n_Face = 0;
+	the_n_Edge = 0;
+
     /*  select clearing (background) color       */
     glClearColor (1.0, 1.0, 1.0, 0.0);
 
     /* setup the camera location and viewing direction */
     init_camera();
+
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+		case  'f':
+			the_n_Face++;
+			break;
+		case  'e':
+			the_n_Edge++;
+			break;
+		default:  break;
+	}
+
+	/* this redraws the scene without
+	waiting for the display callback so that any changes appear
+	instantly */
+	glutPostRedisplay();
 
 }

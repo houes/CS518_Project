@@ -1,6 +1,10 @@
 #pragma once
 #include "draw_objects.h"
 #include "helperFunctions.h"
+#include <sstream>
+
+double delta = 0.005; // distance defining an edge separated into two halfedges 
+double omega = 0.035; // the length of the arrow head
 
 void draw_points(const vector<Point2D>& input_pts)
 {
@@ -42,9 +46,6 @@ void draw_DCEL(const DCEL& data)
 	const list<Face>* faces = data.get_faces();
 
 	list<Face>::const_iterator it = faces->begin();
-
-	double delta = 0.005;
-	double omega = 0.035;
 
 	while (it != faces->end())
 	{
@@ -186,5 +187,170 @@ void draw_DCEL(const DCEL& data)
 
 		it++;
 	}
+
+}
+
+
+void highlight_edge(const DCEL& data, int nFace, int nEdge)
+{
+	glLineWidth(2.0);
+
+	nFace = nFace%data.get_faces()->size();
+
+	const list<Face>* faces = data.get_faces();
+
+	list<Face>::const_iterator it = faces->begin();
+
+	int iFace = 0;
+	while (iFace++ < nFace)
+	{
+		it++;
+		if (it == faces->end())
+			it = faces->begin();
+	}
+
+	Edge* s = it->get_outerComponent();
+	Edge* e = s;
+	vector<Edge*> eList;
+
+	if (s != nullptr)
+	{ 
+		do
+		{
+			eList.push_back(e);
+			e = e->get_next();
+		} while (e != s);
+	}
+
+	if (!it->get_innerComponent().empty())
+	{
+		int nHoles = it->get_innerComponent().size();
+		for (int i = 0; i < nHoles; i++)
+		{
+			Edge* h_s = it->get_innerComponent().at(i);
+			Edge* h_e = h_s;
+			do
+			{
+				eList.push_back(h_e);
+				h_e = h_e->get_next();
+			} while (h_e != h_s);
+		}
+	}
+
+	nEdge = nEdge % eList.size();
+	e = eList.at(nEdge);
+
+	Vertex* v1 = e->get_origin();
+	Vertex* v2 = e->get_destination();
+
+	// draw the halfedge, shifted by a distance delta
+	double dx = delta *(v1->getY() - v2->getY()) / (*v1 - *v2).length();
+	double dy = -delta *(v1->getX() - v2->getX()) / (*v1 - *v2).length();
+		
+	glColor3f(0.8, 0.8, 0);
+	glBegin(GL_LINES);
+		glVertex2f(v1->getX() + dx, v1->getY() + dy);
+		glVertex2f(v2->getX() + dx, v2->getY() + dy);
+	glEnd();
+
+	// draw the arrow heads
+	Point2D p1, p2, p3;
+	p1 = *v2;
+	generate_an_arrow_head(10, omega, *v1, *v2, p2, p3);
+
+	glBegin(GL_TRIANGLES);
+		glVertex2f(p1.getX() + dx, p1.getY() + dy);
+		glVertex2f(p2.getX() + dx, p2.getY() + dy);
+		glVertex2f(p3.getX() + dx, p3.getY() + dy);
+	glEnd();
+
+	// draw the destination point: v2
+	glColor3f(1, 0, 0);
+	glPointSize(7);
+	glBegin(GL_POINTS);
+		glVertex2f(v2->getX() + dx, v2->getY() + dy);
+	glEnd();
+
+	// find e in the storage "edges"
+	list<Edge>::const_iterator it2 = data.get_edges()->begin();
+	int idx2 = 0;
+	while (it2 != data.get_edges()->end())
+	{
+		if (e == &*it2)
+			break;
+
+		idx2++;
+		it2++;
+	}
+
+	// find v2 in the storage "vertices"
+	list<Vertex>::const_iterator it3 = data.get_vertices()->begin();
+	int idx3 = 0;
+	while (it3 != data.get_vertices()->end())
+	{
+		if (v2 == &*it3)
+			break;
+
+		idx3++;
+		it3++;
+	}
+
+	draw_2D_text(idx2,idx3);
+}
+
+/*
+Drawing text 2D screen.
+*/
+void drawText(const char *text, int length, int x, int y)
+{
+	glMatrixMode(GL_PROJECTION); // change the current matrix to PROJECTION
+	double matrix[16]; // allocate 16-byte in memory (thanks to BlueByteGames about memory-leak warning comment on YouTube)
+	glGetDoublev(GL_PROJECTION_MATRIX, matrix); // get the values from PROJECTION matrix to local variable
+	glLoadIdentity(); // reset PROJECTION matrix to identity matrix
+	glOrtho(0, 800, 0, 800, -5, 5); // orthographic perspective
+	glMatrixMode(GL_MODELVIEW); // change current matrix to MODELVIDE matrix again
+	glLoadIdentity(); // reset it to identity matrix
+	glPushMatrix(); // push current state of MODELVIEW matrix to stack
+	glLoadIdentity(); // reset it again. (may not be required, but it my convention
+	glRasterPos2i(x, y); // raster position in 2D
+	for (int i = 0; i<length; i++){
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)text[i]); // generation of characters in our text with 9 by 15 GLU font
+	}
+	glPopMatrix(); // get MODELVIEW matrix value from stack
+	glMatrixMode(GL_PROJECTION); // change current matrix mode to PROJECTION
+	glLoadMatrixd(matrix); // reset
+	glMatrixMode(GL_MODELVIEW); // change current matrix mode to MODELVIEW
+}
+
+void draw_2D_text(int EdgeIdx, int VertexIdx)
+{
+	using namespace std;
+	/*Disable lighting effect because the plain text should not rely on light*/
+	//glDisable(GL_LIGHTING);
+	glEnable(GL_COLOR_MATERIAL);
+
+	// Display of computational results
+	ostringstream stringStream[2];
+	stringStream[0] << " Current Edge  #: " << EdgeIdx;
+	stringStream[1] << " Current Vertex#: " << VertexIdx;
+
+	string text[] = { stringStream[0].str(), stringStream[1].str() };
+
+	glColor3f(0, 0, 0);
+	drawText(text[0].data(), text[0].size(), 0, 780);
+	drawText(text[1].data(), text[1].size(), 0, 760);
+	
+	// Display instruction of keybord controls
+	stringstream keyboardctrls[5], title;
+	title << " keyboard instructions:";
+	keyboardctrls[0] << " 'f': change face" ;
+	keyboardctrls[1] << " 'e': change edge " ;
+
+	drawText(title.str().data(), title.str().size(), 500, 780);
+	drawText(keyboardctrls[0].str().data(), keyboardctrls[0].str().size(), 500, 760);
+	drawText(keyboardctrls[1].str().data(), keyboardctrls[1].str().size(), 500, 740);
+
+	glDisable(GL_COLOR_MATERIAL);
+	//glEnable(GL_LIGHTING);
 
 }
