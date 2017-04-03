@@ -1,5 +1,7 @@
+#pragma once
 #include"DCEL.h"
 #include <stdexcept>
+#include "LineSegment.h"
 
 
 void DCEL::create_an_edge(Vertex v1_, Vertex v2_)
@@ -204,4 +206,53 @@ Vertex* DCEL::get_an_vertex_at(int pos)
 	}
 
 	return &*it;
+}
+
+void DCEL::construct_SimplePolygon(const vector<Vertex>& list)
+{
+	if (list.empty() || list.size() == 1)
+		throw invalid_argument("not enough vertices(<=1)");
+
+	vector<LineSegment> segs;
+	vector<Vertex>::const_iterator it = list.begin();
+
+	segs.push_back(LineSegment(*it, *(it + 1)));
+	create_an_edge(*it, *(it + 1));
+
+	it++;
+	it++;
+
+	while (it != list.end())
+	{
+		LineSegment l( *(prev(it)), *(it));
+
+		try{
+			if (l.doIntersect(segs, 0, segs.size() - 1))
+				throw invalid_argument("not simply polygon! abort");
+		}
+		catch (std::exception& e)
+		{
+			cout << "exception: " << e.what() << endl << endl;
+		}
+
+
+		segs.push_back(l);
+
+		add_vertex_at(*(it++));
+	}
+
+	it--;
+
+	try{
+		if (LineSegment(*it,vertices.front()).doIntersect(segs, 1, segs.size() - 1))
+			throw invalid_argument("not simply polygon! abort");
+	}
+	catch (std::exception& e)
+	{
+		cout << "exception: " << e.what() << endl << endl;
+	}
+
+	split_face(get_an_edge_at(1), get_an_vertex_at(vertices.size()-1));
+
+
 }

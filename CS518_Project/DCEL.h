@@ -25,6 +25,10 @@ public:
 	const list<Vertex>*		get_vertices()	const	{ return &vertices; }
 	const list<Face>*		get_faces()		const	{ return &faces; }
 	const list<Edge>*		get_edges()		const	{ return &edges; }
+	
+	Edge*	get_an_edge_at(int pos);   // get a pointer to an edge   in the list at pos
+
+	Vertex* get_an_vertex_at(int pos); // get a pointer to an vertex in the list at pos
 
 	void create_an_edge(Vertex v1, Vertex v2);
 
@@ -36,10 +40,11 @@ public:
 
 	void add_edge(const Edge& e);
 
+	// this construct a simple polygon from a set of vertices
+	void construct_SimplePolygon(const vector<Vertex>& list);
+
 	void print();
 
-	Edge*	get_an_edge_at(int pos);   // get a pointer to an edge   in the list at pos
-	Vertex* get_an_vertex_at(int pos); // get a pointer to an vertex in the list at pos
 	
 	// TODO:
 	// DCEL* get_copy();
