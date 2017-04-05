@@ -48,6 +48,9 @@
     <ClInclude Include="LineSegment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Treap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="draw_objects.cpp">
