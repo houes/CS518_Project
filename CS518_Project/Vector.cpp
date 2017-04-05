@@ -8,6 +8,7 @@ double Vector::computeAngle_wrt(const Vector& v0)
 	//    angle >0
 	// else 
 	//    angle <0
+	double TOL = 1e-7;
 
 	bool leftTurn = false;
 
@@ -18,12 +19,15 @@ double Vector::computeAngle_wrt(const Vector& v0)
 	else
 		leftTurn = false;
 
-	double angle = asin(abs(crossp / this->length() / v0.length())); //>0
+	double angle = acos(v0.dot_product(*this) / v0.length() / this->length()); //[0,PI]
 
 	if (leftTurn)
 		angle = abs(angle);
 	else
 		angle = -abs(angle);
+
+	if (abs(angle) < TOL)
+		angle = 0;
 
 	return angle;
 }

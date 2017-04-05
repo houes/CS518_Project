@@ -17,10 +17,12 @@
 template <class KEY, class VALUE>
 class Treap {
 
+
 public:
 
   class Node {   // A node in the treap.
     friend class Treap;
+	friend class MyTreap;
 	KEY key;      //   The key.
     unsigned int priority; //   The priority.
     VALUE value;  //   The value.
@@ -134,7 +136,7 @@ public:
 
 
 
-private:
+protected:
 
   Node* root;  // Pointer to root node of treap.
 

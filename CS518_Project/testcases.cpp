@@ -31,6 +31,7 @@ void runTestCases(int caseID)
 	data.construct_SimplePolygon(list);
 
 	Triangulation tri;
+
 	tri.makeMonotone(data);
 
 	//// case 1:

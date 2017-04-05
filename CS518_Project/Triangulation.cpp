@@ -1,19 +1,16 @@
 #pragma once
 #include "Triangulation.h"
-#include "Treap.h"
 #include <queue>
-#include <map>
 #include <string>
 
 using namespace std;
-
-typedef Treap<double, Edge> MyTreap;
-typedef MyTreap::Node MyNode;
 
 void Triangulation::makeMonotone(DCEL& P)
 {
 	// input  P: a simple polygon stored in a DCEL
 	// output P: the input simple polygon is divided into monotone polygons, stored in the same DCEL
+
+	polygon = &P; // save as member
 
 	priority_queue<VertexT, vector<VertexT>, LessThanByYcoord> Q;
 
@@ -21,13 +18,14 @@ void Triangulation::makeMonotone(DCEL& P)
 	for (it = P.get_vertices()->begin(); it != P.get_vertices()->end();it++)
 		Q.push(VertexT(*it));
 
-	MyTreap T;
+	/* initialize random seed: */
+	srand(time(NULL)); // for treap insertion in handleVertex()
 
 	while (!Q.empty())
 	{
 		VertexT v = Q.top();
 		Q.pop();
-		HandleVertex(v);
+		handleVertex(v);
 	}
 }
 
@@ -59,8 +57,54 @@ bool goes_DownUp(Edge* e1, Edge* e2)
 		return false;
 }
 
+Edge* VertexT::getPrev_ccw()
+{
+	// get the next edge in counter-clockwise
+	// prev->v->next
+
+	Edge *prev = nullptr, *next = nullptr;
+
+	if (get_incidentEdge()->isCCW())
+	{
+		next = get_incidentEdge();
+		prev = next->get_prev();
+	}
+	else
+	{
+		prev = get_incidentEdge()->get_twin();
+		next = prev->get_next();
+	}
+
+	return prev;
+}
+
+Edge* VertexT::getNext_ccw()
+{
+	// get the next edge in counter-clockwise
+	// prev->v->next
+
+	Edge *prev=nullptr, *next = nullptr;
+
+	if (get_incidentEdge()->isCCW())
+	{
+		next = get_incidentEdge();
+		prev = next->get_prev();
+	}
+	else
+	{
+		prev = get_incidentEdge()->get_twin();
+		next = prev->get_next();
+	}
+
+	return next;
+}
+
+
+
 VertexType VertexT::determineVertexType()
 {
+	VertexType result;
+
 	Edge *e1, *e2; // in CCW order, e1->vertex->e2
 
 	if (get_incidentEdge()->isCCW())
@@ -78,25 +122,27 @@ VertexType VertexT::determineVertexType()
 	{
 		double crossp = e1->getVector().cross_product(e2->getVector());
 		if (crossp < 0) // make right turn
-			return VertexType::SPLIT;
+			result = VertexType::SPLIT;
 		else // make left turn
-			return VertexType::START;
+			result = VertexType::START;
 	}
 	else if (goes_DownUp(e1, e2)) // neighbour are above vertex
 	{
 		double crossp = e1->getVector().cross_product(e2->getVector());
 		if (crossp < 0) // make right turn
-			return VertexType::MERGE;
+			result = VertexType::MERGE;
 		else // make left turn
-			return VertexType::END;
+			result = VertexType::END;
 	}
 	else 
-		return VertexType::REGULAR;
+		result = VertexType::REGULAR;
 
-		
+	setType(result);
+
+	return result;
 }
 
-void Triangulation::HandleVertex(VertexT v)
+void Triangulation::handleVertex(VertexT v)
 {
 	map<VertexType, string> EnumMap;
 	EnumMap[VertexType::REGULAR] = "REGULAR";
@@ -109,5 +155,95 @@ void Triangulation::HandleVertex(VertexT v)
 
 	v.print(false); 
 	cout << EnumMap[type] << endl;
+	switch (type)
+	{
+		case VertexType::START:
+			handleStartVertex(v);
+			break;
+		case VertexType::SPLIT:
+			//handleSplitVertex(v);
+			break;
+		case VertexType::MERGE:
+			//handleMergeVertex(v);
+			break;
+		case VertexType::END:
+			//handleEndVertex(v);
+			break;
+		case VertexType::REGULAR:
+			//handleRegularVertex(v);
+			break;
+		default:
+			throw invalid_argument("invalid vertex type");
+	}
 	
+}
+
+void Triangulation::handleStartVertex(VertexT v)
+{
+	Edge* ei = v.getNext_ccw();
+	EdgeNode* eNode = new EdgeNode(ei->get_destination()->getX(), ei);
+
+	// keep track of nodes created
+	edgeNodeList.push_back(eNode);
+
+	T.insert(eNode);
+	helper[ei] = &v;
+
+}
+
+void Triangulation::handleEndVertex(VertexT v)
+{
+	Edge* ei_1 = v.getPrev_ccw();
+
+	if (helper[ei_1]->getType() == VertexType::MERGE)
+		polygon->split_face(ei_1, helper[ei_1]);
+
+	T.remove(getEdgeNodeContainsEdge(ei_1));
+		
+}
+
+void Triangulation::handleSplitVertex(VertexT v)
+{
+	Edge* ej = T.find_FirstEdge_LeftOf(&v);
+	Edge* ei_1 = v.getPrev_ccw();
+	Edge* ei = v.getNext_ccw();
+
+	polygon->split_face(ei_1, helper[ej]);
+	helper[ej] = &v;
+	T.insert(getEdgeNodeContainsEdge(ei));
+	helper[ei] = &v;
+
+}
+
+void Triangulation::handleMergeVertex(VertexT v)
+{
+
+}
+
+void Triangulation::handleRegularVertex(VertexT v)
+{
+
+}
+
+EdgeNode* Triangulation::getEdgeNodeContainsEdge(Edge* e)
+{
+	list<EdgeNode*>::iterator it = edgeNodeList.begin();
+
+	while (it != edgeNodeList.end())
+	{
+		if((*it)->getValue()==e)
+			return *it;
+	}
+
+	try{
+		throw invalid_argument("No EdgeNode contains this edge!");
+	}
+	catch (exception& e)
+	{
+		cout << "exception: " << e.what() << endl << endl;
+	}
+
+
+	return nullptr;
+
 }

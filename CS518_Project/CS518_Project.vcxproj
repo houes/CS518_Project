@@ -157,6 +157,7 @@
     <ClInclude Include="draw_objects.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Face.h" />
+    <ClInclude Include="MyTreap.h" />
     <ClInclude Include="helperFunctions.h" />
     <ClInclude Include="LineSegment.h" />
     <ClInclude Include="OpenGLSettings.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="helperFunctions.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyTreap.cpp" />
     <ClCompile Include="OpenGLSettings.cpp" />
     <ClCompile Include="testcases.cpp" />
     <ClCompile Include="Triangulation.cpp" />

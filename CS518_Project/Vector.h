@@ -55,4 +55,9 @@ public:
 	{
 		return x*other.getY() - y*other.getX();
 	}
+
+	double dot_product(const Vector& other) const
+	{
+		return x*other.getX() + y*other.getY();
+	}
 };

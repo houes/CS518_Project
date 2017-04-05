@@ -32,7 +32,10 @@ public:
 		setY(y + v.getY()); 
 	}
 
-	Vector  operator-(const Vertex& other) { return Vector(getX() - other.getX(), getY() - other.getY()); }
+	Vector  operator-(const Vertex& other) 
+	{ 
+		return Vector(getX() - other.getX(), getY() - other.getY());
+	}
 
 	void print(bool newline = true);
 };

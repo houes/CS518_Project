@@ -95,7 +95,7 @@ void DCEL::add_edge(const Edge& e)
 
 void DCEL::split_face(Edge* h, Vertex* v, bool polygon_ccw)
 {
-	// create the edge connecting v and h.destination
+	// create the edge connecting h.destination and v
 	// pre-condition: (1) the vertices v and h.destination should be in the same face
 	//				  (2) the vertices v and h.destination are not adjacent
 	// we consider two cases:
