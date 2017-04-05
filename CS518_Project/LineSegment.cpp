@@ -94,3 +94,8 @@ bool LineSegment::doIntersect(const vector<LineSegment>& segs, int begin, int en
 
 	return false;
 }
+
+Vector LineSegment::getVector()
+{
+	return getq()-getp();
+}

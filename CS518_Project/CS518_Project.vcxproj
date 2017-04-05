@@ -178,6 +178,7 @@
     <ClCompile Include="OpenGLSettings.cpp" />
     <ClCompile Include="testcases.cpp" />
     <ClCompile Include="Triangulation.cpp" />
+    <ClCompile Include="Vector.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>

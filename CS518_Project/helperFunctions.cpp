@@ -43,6 +43,30 @@ vector<Point2D> getBoundaryBox(vector<Point2D> ctrl_pts)
 	return vec;
 }
 
+vector<Vertex> getBoundaryBox(vector<Vertex> ctrl_pts)
+{
+	vector<Vertex> pts = ctrl_pts;
+
+	double min_X, min_Y, max_X, max_Y;
+
+	sort(pts.begin(), pts.end(), smallerX);
+	min_X = pts.front().getX();
+	max_X = pts.back().getX();
+
+	sort(pts.begin(), pts.end(), smallerY);
+	min_Y = pts.front().getY();
+	max_Y = pts.back().getY();
+
+	Vertex pMin(min_X, min_Y);
+	Vertex pMax(max_X, max_Y);
+
+	vector<Vertex> vec;
+	vec.push_back(pMin);
+	vec.push_back(pMax);
+
+	return vec;
+}
+
 void scalePointSet(const vector<Point2D>& ctrl_pts, vector<Point2D> &pts)
 {
 	vector<Point2D> boundarybox = getBoundaryBox(ctrl_pts);
@@ -58,7 +82,7 @@ void scalePointSet(const vector<Point2D>& ctrl_pts, vector<Point2D> &pts)
 	// with a size of (length, height) = (1, H/L) or (L/H, 1)
 	for (int i = 0; i < pts.size(); i++)
 	{
-		pts[i] = pts[i] - pMin;
+		pts[i].minus(pts[i]-pMin);
 		pts[i].scaleX(scale);
 		pts[i].scaleY(scale);
 	}
@@ -80,7 +104,52 @@ void scalePointSet(const vector<Point2D>& ctrl_pts, vector<Point2D> &pts)
 	{
 		pts[i].scaleX(1/0.8);
 		pts[i].scaleY(1/0.8);
-		pts[i] = pts[i] + Point2D(xTranslate, yTranslate);
+		pts[i].add(Vector(xTranslate, yTranslate));
+	}
+}
+
+void scalePointSet(const vector<Vertex>& ctrl_pts, vector<Vertex> &pts)
+{
+	vector<Vertex> boundarybox = getBoundaryBox(ctrl_pts);
+	Vertex pMin = boundarybox[0];
+	Vertex pMax = boundarybox[1];
+
+	double length = pMax.getX() - pMin.getX();
+	double height = pMax.getY() - pMin.getY();
+
+	double scale = length > height ? length : height;
+
+	// transalte and scale the drawing to originate at the local [0,0]
+	// with a size of (length, height) = (1, H/L) or (L/H, 1)
+	for (int i = 0; i < pts.size(); i++)
+	{
+		Vector offset((pts[i] - pMin));
+
+		pts[i].setX(offset.getX());
+		pts[i].setY(offset.getY());
+
+		pts[i].scaleX(scale);
+		pts[i].scaleY(scale);
+	}
+
+	// scale the drawing by a factor of 0.8 and then 
+	// transalte the drawing to the center of the view
+	double xTranslate, yTranslate;
+	if (length > height)
+	{
+		xTranslate = 0.1;
+		yTranslate = (1 - height / length*0.8) / 2.0;
+	}
+	else
+	{
+		xTranslate = (1 - 0.8*length / height) / 2.0;
+		yTranslate = 0.1;
+	}
+	for (int i = 0; i < pts.size(); i++)
+	{
+		pts[i].scaleX(1 / 0.8);
+		pts[i].scaleY(1 / 0.8);
+		pts[i].add(Vector(xTranslate, yTranslate));
 	}
 }
 

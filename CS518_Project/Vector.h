@@ -32,6 +32,8 @@ public:
 		return result;
 	}
 
+	double computeAngle_wrt(const Vector& v0);
+
 	void normalize(){ 
 		double l = length();
 		x = x / l; 
@@ -49,7 +51,7 @@ public:
 		y = y_;
 	}
 
-	double cross_product(const Vector& other)
+	double cross_product(const Vector& other) const
 	{
 		return x*other.getY() - y*other.getX();
 	}

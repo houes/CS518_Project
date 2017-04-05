@@ -16,4 +16,6 @@ public:
 	Point2D getp() const { return p; }
 	Point2D getq() const { return q; }
 
+	Vector getVector();
+
 };

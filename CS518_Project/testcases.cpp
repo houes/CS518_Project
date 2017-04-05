@@ -10,25 +10,25 @@ extern DCEL	data;
 void runTestCases(int caseID)
 {
 
-	vector<Vertex> list_book = { Vertex(1117,411), Vertex(1037,383), Vertex(1030,179),
-		Vertex(934, 227), Vertex(875, 188), Vertex(769, 244), Vertex(835, 327), 
-		Vertex(813, 419), Vertex(737,362), Vertex(709,536), Vertex(795,649), 
-		Vertex(890, 594), Vertex(991, 651), Vertex(968, 491), Vertex(1109,535) };
+	vector<Vertex> list_book = { Vertex(1117,-411), Vertex(1037,-383), Vertex(1030,-179),
+		Vertex(934, -227), Vertex(875, -188), Vertex(769, -244), Vertex(835, -327), 
+		Vertex(813, -419), Vertex(737,-362), Vertex(709,-536), Vertex(795,-649), 
+		Vertex(890, -594), Vertex(991, -651), Vertex(968, -491), Vertex(1109,-535) };
 
-	for (int i = 0; i < list_book.size(); i++)
-	{
-		Point2D p = list_book[i]* 0.001;
-		list_book[i].setX(p.getX());
-		list_book[i].setY(p.getY());
-	}
+	//for (int i = 0; i < list_book.size(); i++)
+	//{
+	//	Point2D p = list_book[i]* 0.001;
+	//	list_book[i].setX(p.getX());
+	//	list_book[i].setY(p.getY());
+	//}
 
-	//vector<Vertex> reference(list_book);
-	//scalePointSet(reference, list_book);
+	vector<Vertex> reference(list_book);
+	scalePointSet(reference, list_book);
 
 	vector<Vertex> list = { Vertex(0.1, 0.1), Vertex(0.15, 0.7), Vertex(0.3, 0.8), 
 		Vertex(0.6, 0.7), Vertex(0.7, 0.5), Vertex(0.5, 0.6), Vertex(0.2, 0.4) };
 
-	data.construct_SimplePolygon(list_book);
+	data.construct_SimplePolygon(list);
 
 	Triangulation tri;
 	tri.makeMonotone(data);

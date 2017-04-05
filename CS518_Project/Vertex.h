@@ -26,15 +26,13 @@ public:
 			return false;
 	}
 
+	void add(Vector v) 
+	{ 
+		setX(x + v.getX());
+		setY(y + v.getY()); 
+	}
+
 	Vector  operator-(const Vertex& other) { return Vector(getX() - other.getX(), getY() - other.getY()); }
 
-	void print(bool newline = true)
-	{
-		cout << "(" << getX() << "," << getY() << ")";
-
-		if (newline)
-			cout << endl;
-		else
-			cout << "	";
-	}
+	void print(bool newline = true);
 };

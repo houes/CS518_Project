@@ -93,7 +93,7 @@ void DCEL::add_edge(const Edge& e)
 	//TODO
 }
 
-void DCEL::split_face(Edge* h, Vertex* v)
+void DCEL::split_face(Edge* h, Vertex* v, bool polygon_ccw)
 {
 	// create the edge connecting v and h.destination
 	// pre-condition: (1) the vertices v and h.destination should be in the same face
@@ -113,11 +113,26 @@ void DCEL::split_face(Edge* h, Vertex* v)
 	edges.push_back(Edge());
 	Edge* h2 = &edges.back();
 
-	f1->setOuterComponent(h1);
+
 	if (h->isOnOuterComponent()) // distinguish between cases (a) and (b)
+	{
+		f1->setOuterComponent(h1);
 		f2->setOuterComponent(h2);
+	}
 	else
-		f2->addInnerComponent(h2);
+	{
+		if (polygon_ccw)
+		{
+			f1->addInnerComponent(h1);
+			f2->setOuterComponent(h2);
+		}
+		else
+		{
+			f1->setOuterComponent(h1);
+			f2->addInnerComponent(h2);
+		}
+	}
+
 	h1->set_twin(h2);
 	h2->set_twin(h1);
 	h1->set_origin(h->get_destination());
@@ -244,15 +259,37 @@ void DCEL::construct_SimplePolygon(const vector<Vertex>& list)
 	it--;
 
 	try{
-		if (LineSegment(*it,vertices.front()).doIntersect(segs, 1, segs.size() - 1))
+		LineSegment l(*it, vertices.front());
+		if (l.doIntersect(segs, 1, segs.size() - 1))
 			throw invalid_argument("not simply polygon! abort");
+		segs.push_back(l);
 	}
 	catch (std::exception& e)
 	{
 		cout << "exception: " << e.what() << endl << endl;
 	}
 
-	split_face(get_an_edge_at(1), get_an_vertex_at(vertices.size()-1));
+	// compute whether the polygon traverse ccw or cw when finally spliced(connected)
+	bool polygon_ccw = false;
+
+	double accumulated_angle = 0;
+	for (int i = 0; i < segs.size(); i++)
+	{
+		Vector v1, v2;
+
+		v1 = segs[i].getVector();
+		v2 = segs[(i + 1) % segs.size()].getVector();
+
+		double angle = v2.computeAngle_wrt(v1);
+		accumulated_angle += angle;
+	}
+
+	if (accumulated_angle > 0)
+		polygon_ccw = true; // h1 inner component
+	else
+		polygon_ccw = false; // h1 outer component
+
+	split_face(get_an_edge_at(1), get_an_vertex_at(vertices.size() - 1), polygon_ccw);
 
 
 }
