@@ -27,4 +27,14 @@ public:
 	}
 
 	Vector  operator-(const Vertex& other) { return Vector(getX() - other.getX(), getY() - other.getY()); }
+
+	void print(bool newline = true)
+	{
+		cout << "(" << getX() << "," << getY() << ")";
+
+		if (newline)
+			cout << endl;
+		else
+			cout << "	";
+	}
 };

@@ -48,4 +48,9 @@ public:
 		x = x_;
 		y = y_;
 	}
+
+	double cross_product(const Vector& other)
+	{
+		return x*other.getY() - y*other.getX();
+	}
 };

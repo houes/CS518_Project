@@ -1,3 +1,6 @@
+#pragma once
+
+class Vector;
 class Vertex;
 class Face;
 
@@ -8,6 +11,7 @@ class Edge
 	Face* IncidentFace;
 	Edge* Next;
 	Edge* Prev;
+
 public:
 	Edge(){ Origin = nullptr; Twin = nullptr; IncidentFace = nullptr; Next = nullptr; Prev = nullptr; }
 	Edge(Vertex* Origin_, Edge* Twin_, Face* IncidentFace_, Edge* Next_, Edge* Prev_)
@@ -34,4 +38,7 @@ public:
 	Vertex* get_destination(){ return get_twin()->get_origin(); }
 
 	bool isOnOuterComponent();
+	bool isCCW(){ return isOnOuterComponent(); }
+
+	Vector getVector();
 };

@@ -1,8 +1,9 @@
 #pragma once
+#include <stdexcept>
 #include "Edge.h"
 #include "Vertex.h"
 #include "Face.h"
-#include <stdexcept>
+#include "Vector.h"
 
 bool Edge::isOnOuterComponent()
 {
@@ -45,4 +46,12 @@ bool Edge::isOnOuterComponent()
 	}
 
 	throw std::invalid_argument(" this edge is on neither inner component or outer component, DCEL structure is not correct");
+}
+
+Vector Edge::getVector()
+{
+	Vertex v1(*get_destination());
+	Vertex v2(*get_origin());
+
+	return v1 - v2;
 }

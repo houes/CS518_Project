@@ -163,6 +163,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="testcases.h" />
     <ClInclude Include="Treap.h" />
+    <ClInclude Include="Triangulation.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
@@ -176,6 +177,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpenGLSettings.cpp" />
     <ClCompile Include="testcases.cpp" />
+    <ClCompile Include="Triangulation.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
