@@ -247,21 +247,28 @@ VertexType Triangulation::determineVertexType(Vertex* v)
 
 }
 
-void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace)
+void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_)
 {
 	if (nFace<0 || nFace>P.get_faces()->size()-1)
 		throw invalid_argument(" face number out of range");
 
-	vector<Vertex*> vList;
+	// pre-process: find the y-monotone polygon either use nFace or f_ptr_
+	Face* f_ptr = nullptr;
+
 	list<Face>::const_iterator it_f = P.get_faces()->begin();
-	
 	int iFace = 0;
 	while (iFace++ < nFace)
 		it_f++;
 
-	Edge* e0 = it_f->get_outerComponent();
-	Edge* ei = e0;
+	if (f_ptr_ == nullptr)
+		f_ptr = const_cast<Face*>(&*it_f);
+	else
+		f_ptr = f_ptr_;
 
+	// popupate the vertices to process
+	vector<Vertex*> vList;
+	Edge* e0 = f_ptr->get_outerComponent();
+	Edge* ei = e0;
 	do
 	{
 		vList.push_back(ei->get_destination());
@@ -282,8 +289,8 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace)
 	Vertex* topmost = vList.front();
 	Vertex* lowest = vList.back();
 
-	Edge* leftChain0 = topmost->getNext_ccw();
-	Edge* rightChain0 = lowest->getNext_ccw();
+	Edge* leftChain0 = topmost->getNext_ccw(f_ptr);
+	Edge* rightChain0 = lowest->getNext_ccw(f_ptr);
 
 	Edge* left_e = leftChain0, *right_e = rightChain0;
 	
@@ -320,9 +327,10 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace)
 			{
 				Vertex* v = S.top();
 
-				Face* vj_f = vj->get_incidentEdge()->get_incidentFace();
+				Face* vj_f = vj->getNext_ccw()->get_incidentFace();
 
-				P.split_face(v->getPrev_ccw(vj_f), vj);
+				P.split_face(vj, v);
+				//P.split_face(v->getPrev_ccw(vj_f), vj);
 				S.pop();
 			}
 			S.pop();
@@ -353,12 +361,13 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace)
 			// left turn if vj is on right chain, right turn if vj is on left chain
 			while ( crossp * vjOnleftChain < 0) 
 			{
-				Face* vj_f = vj->get_incidentEdge()->get_incidentFace();
+				Face* vj_f = vj->getNext_ccw()->get_incidentFace();
 
-				if (vjOnleftChain<0)
-					P.split_face(x->getNext_ccw(vj_f), vj);
-				else
-					P.split_face(vk->getPrev_ccw(vj_f), vj);
+				P.split_face(vj, vk);
+				//if (vjOnleftChain<0)
+					//P.split_face(x->getNext_ccw(vj_f), vj);
+				//else
+				//	P.split_face(vk->getPrev_ccw(vj_f), vj);
 
 				x = vk;
 
@@ -396,4 +405,23 @@ bool Triangulation::isVerticesOnSameChain(Vertex* v1, Vertex* v2)
 		return true;
 	else
 		return false;
+}
+
+void Triangulation::triangulate_simple_Polygon(DCEL& simpleP)
+{
+	makeMonotone(simpleP);
+
+	vector<Face*> faces_ptr; 
+	list<Face>::const_iterator it = simpleP.get_faces()->begin();
+
+	for (; it != simpleP.get_faces()->end(); it++)
+		faces_ptr.push_back(const_cast<Face*>(&*it));
+	
+
+	for (int i = 1; i < faces_ptr.size(); i++)
+	{
+		cout << "face# " << i << " starts " << endl;
+		triangulate_MonotonePolygon(simpleP, 1, faces_ptr[i]);
+	}
+
 }

@@ -50,4 +50,8 @@ public:
 	Edge* getNext_ccw(Face* f = nullptr);
 
 	vector<Edge*> getIncidentEdges();
+	vector<Edge*> getIncidentBackEdges();
+	vector<Edge*> getIncidentEdges_ccw();
+
+	vector<Face*> getIncidentFaces_ccw();
 };

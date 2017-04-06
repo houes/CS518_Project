@@ -38,11 +38,11 @@ Edge* Vertex::getPrev_ccw(Face* f)
 
 	if (f != nullptr)
 	{
-		vector<Edge*> inciEdges = getIncidentEdges();
-		for (int i = 0; i < inciEdges.size(); i++)
+		vector<Edge*> inciBackEdges = getIncidentBackEdges();
+		for (int i = 0; i < inciBackEdges.size(); i++)
 		{
-			if (inciEdges[i]->get_incidentFace() == f)
-				return inciEdges[i];
+			if (inciBackEdges[i]->get_incidentFace() == f)
+				return inciBackEdges[i];
 		}
 		
 		throw invalid_argument("the specified face can not be found for any incident edge of this vertex");
@@ -122,6 +122,47 @@ vector<Edge*> Vertex::getIncidentEdges()
 		result.push_back(e);
 		e = e->get_twin()->get_next();
 	} while (e != next);
+
+	return result;
+}
+
+vector<Edge*> Vertex::getIncidentEdges_ccw()
+{
+	vector<Edge*> result;
+
+	vector<Edge*> inciEdges = getIncidentEdges();
+
+	for (int i = 0; i < inciEdges.size(); i++)
+	{
+		if (inciEdges[i]->isCCW())
+			result.push_back(inciEdges[i]);
+	}
+
+	return result;
+
+}
+
+vector<Edge*> Vertex::getIncidentBackEdges()
+{
+	vector<Edge*> result;
+
+	vector<Edge*> inciEdges = getIncidentEdges();
+
+	for (int i = 0; i < inciEdges.size(); i++)
+		result.push_back(inciEdges[i]->get_twin());
+
+	return result;
+}
+
+vector<Face*> Vertex::getIncidentFaces_ccw()
+{
+	// get the incident faces of a vertex, select only the faces that is ccw
+	vector<Face*> result;
+
+	vector<Edge*> edges = getIncidentEdges_ccw();
+
+	for (int i = 0; i < edges.size(); i++)
+		result.push_back(edges[i]->get_incidentFace());
 
 	return result;
 }

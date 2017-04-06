@@ -170,6 +170,41 @@ void DCEL::split_face(Edge* h, Vertex* v, bool polygon_ccw)
 
 }
 
+void DCEL::split_face(Vertex* v1, Vertex* v2)
+{
+	// create the edge connecting v1 and v2
+	// will detect if v1 and v2 has any shared face, if so, connect, if not throw exception
+
+	vector<Face*> v1faces = v1->getIncidentFaces_ccw();
+	vector<Face*> v2faces = v2->getIncidentFaces_ccw();
+
+	Face* sharedFace = nullptr;
+	bool innerBreaked = false;
+
+	for (int i = 0; i < v1faces.size(); i++)
+	{
+		for (int j = 0; j < v2faces.size(); j++)
+		{
+			if (v1faces[i] == v2faces[j])
+			{
+				sharedFace = v1faces[i];
+				innerBreaked = true;
+				break;
+			}
+
+		}
+		if (innerBreaked)
+			break;
+	}
+
+	if (sharedFace == nullptr)
+		throw invalid_argument("no face is shared by this two vertices!");
+
+	Edge* e = v1->getPrev_ccw(sharedFace);
+
+	split_face(e, v2);
+}
+
 void DCEL::print()
 {
 	cout << "The faces are" << endl;

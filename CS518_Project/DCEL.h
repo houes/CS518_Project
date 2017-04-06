@@ -37,7 +37,9 @@ public:
 	void add_vertex_at(const Vertex& v);
 
 	void split_face(Edge* e, Vertex* v, bool polygon_ccw = false); // split the face by connecting two vertices e.destination and v. both vertices needs to be incident to the same face
-
+	
+	void split_face(Vertex* v1, Vertex* v2);
+	
 	void add_edge(const Edge& e);
 
 	// this construct a simple polygon from a set of vertices

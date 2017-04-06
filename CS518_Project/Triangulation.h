@@ -43,11 +43,11 @@ class Triangulation
 public:
 
 	void makeMonotone(DCEL& simpleP);
+	void triangulate_MonotonePolygon(DCEL& P, int nFace = 1, Face* ptr = nullptr);
+	void triangulate_simple_Polygon(DCEL& simpleP);
 
-	void triangulate_MonotonePolygon(DCEL& P, int nFace);
 
 	void handleVertex(Vertex* v);
-
 	void handleStartVertex(Vertex* v);
 	void handleEndVertex(Vertex* v);
 	void handleSplitVertex(Vertex* v);
