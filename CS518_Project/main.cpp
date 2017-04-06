@@ -30,14 +30,14 @@ int main(int argc, char** argv)
 		cout << " Sample choices [1-3]" << endl
 			<< "  1- a simple monotone polygon" << endl
 			<< "  2- a simple non-monotone polygon" << endl
-			<< "  3- anther simple non-monotone polygon(as shown in the book and class)" << endl;
+			<< "  3- anther simple non-monotone polygon(as shown in the book and class, most complicated)" << endl;
 		cin >> sampleChoice;
 
 		cout << " Test cases choices [1-4]" << endl
 			<< "  1- construct simple polygon" << endl
 			<< "  2- make simple polygon monotone" << endl
 			<< "  3- trianguate all simple monotoned polygons" << endl
-			<< "  4- trianguate a simple monotoned polygon in the sample(need to specify your face), most complicated" << endl;
+			<< "  4- trianguate a simple monotoned polygon in the sample(need to specify your face)" << endl;
 		cin >> caseChoice;
 
 		if (caseChoice == 4)

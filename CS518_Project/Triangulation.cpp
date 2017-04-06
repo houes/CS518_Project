@@ -29,7 +29,6 @@ void Triangulation::makeMonotone(DCEL& P)
 		handleVertex(v);
 	}
 
-	cout << endl;
 }
 
 void Triangulation::handleVertex(Vertex* v)
@@ -409,7 +408,9 @@ bool Triangulation::isVerticesOnSameChain(Vertex* v1, Vertex* v2)
 
 void Triangulation::triangulate_simple_Polygon(DCEL& simpleP)
 {
+	cout << " *** Start making polygon monotone,showing vertice type ***" << endl;
 	makeMonotone(simpleP);
+	cout << " *** End making polygon monotone ***" << endl << endl;
 
 	vector<Face*> faces_ptr; 
 	list<Face>::const_iterator it = simpleP.get_faces()->begin();
@@ -421,11 +422,14 @@ void Triangulation::triangulate_simple_Polygon(DCEL& simpleP)
 			faces_ptr.push_back(const_cast<Face*>(&*it));
 	}
 	
-
+	cout << " *** Start triangulating monotone polygons, a face is defined by a set of vertices  ***" << endl;
+	
 	for (int i = 0; i < faces_ptr.size(); i++)
 	{
-		cout << "face# " << i << " starts " << endl;
+		cout << "face# " << i << " starts" << endl;
 		triangulate_MonotonePolygon(simpleP, 1, faces_ptr[i]);
 		cout << endl;
+
 	}
+	cout << " *** End triangulating monotone polygons ***" << endl;
 }

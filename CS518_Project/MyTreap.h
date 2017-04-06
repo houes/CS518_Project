@@ -1,3 +1,11 @@
+/**
+CS518, MyTreap.h
+Purpose: Implementation of Treap structure
+
+@author Guangyu Hou
+@version 0.0 04/06/17
+*/
+
 #pragma once
 #include "Treap.h"
 #include "Edge.h"
@@ -21,5 +29,3 @@ class MyTreap : public Treap_
 			return false;
 	}
 };
-
-//typedef MyTreap::Node EdgeNode;

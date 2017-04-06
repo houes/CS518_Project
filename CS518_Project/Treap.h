@@ -10,8 +10,12 @@
 #include <time.h>
 #include <iostream>
 
+// Source: http://iss.ices.utexas.edu/projects/galois/api/2.1/treap_8h.html
 // A Cartesian tree.
 // adapted from treap code by Bobby Blumofe
+
+// Modified by Guangyu Hou
+// 4/6/2017
 
 
 template <class KEY, class VALUE>

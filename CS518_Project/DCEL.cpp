@@ -207,7 +207,8 @@ void DCEL::split_face(Vertex* v1, Vertex* v2)
 
 void DCEL::print()
 {
-	cout << "The faces are" << endl;
+	cout << endl;
+	cout << "*** The resulting faces are *** " << endl;
 	list<Face>::iterator it = faces.begin();
 	int idx = 0;
 	while (it != faces.end())
@@ -217,7 +218,7 @@ void DCEL::print()
 		cout << endl;
 		++it;
 	}
-
+	cout << "*** End showing resulting faces *** " << endl;
 }
 
 Edge* DCEL::get_an_edge_at(int pos)

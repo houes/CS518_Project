@@ -1,3 +1,11 @@
+/**
+CS518, Triangulation.h
+Purpose: Implementation of Simple Polygon Triangulation algorithm
+
+@author Guangyu Hou
+@version 0.0 04/06/17
+*/
+
 #pragma once
 #include <map>
 #include "DCEL.h"
