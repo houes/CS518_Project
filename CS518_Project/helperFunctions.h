@@ -11,6 +11,7 @@ vector<Point2D> getBoundaryBox(vector<Point2D> ctrl_pts);
 
 void scalePointSet(const vector<Point2D>& ctrl_pts, vector<Point2D> &pts);
 void scalePointSet(const vector<Vertex>& ctrl_pts, vector<Vertex> &pts);
+void scalePointSet(vector<Vertex> &pts);
 
 vector<Point2D> get_scaled_pts_set(const vector<Point2D>& input);
 

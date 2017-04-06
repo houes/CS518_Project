@@ -249,8 +249,11 @@ VertexType Triangulation::determineVertexType(Vertex* v)
 
 void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_)
 {
-	if (nFace<0 || nFace>P.get_faces()->size()-1)
+	if (nFace<0 || nFace>P.get_faces()->size() - 1)
+	{
+		cout << "*** face number out of range *** " << endl;
 		throw invalid_argument(" face number out of range");
+	}
 
 	// pre-process: find the y-monotone polygon either use nFace or f_ptr_
 	Face* f_ptr = nullptr;
@@ -265,6 +268,12 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_
 	else
 		f_ptr = f_ptr_;
 
+	if (f_ptr->get_outerComponent() == nullptr)
+	{
+		cout << "*** no outer component in this face, abort! ***"<<endl;
+		return;
+	}
+
 	// popupate the vertices to process
 	vector<Vertex*> vList;
 	Edge* e0 = f_ptr->get_outerComponent();
@@ -275,11 +284,6 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_
 		ei = ei->get_next();
 
 	} while (ei != e0);
-
-	//list<Vertex>::const_iterator it = P.get_vertices()->begin();
-
-	//for (; it != P.get_vertices()->end(); it++)
-	//	vList.push_back(const_cast<Vertex*>(&*it));
 
 	sort(vList.rbegin(), vList.rend(), LessThanByYcoord()); // sorted in reverse order
 
@@ -294,10 +298,10 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_
 
 	Edge* left_e = leftChain0, *right_e = rightChain0;
 	
-	cout << endl;
+	//cout << endl;
 	while (left_e->get_destination() != lowest)
 	{
-		left_e->get_destination()->print(); // debug
+		//left_e->get_destination()->print(); // debug
 
 		isOnLeftChainMap[left_e->get_destination()] = true;
 		left_e = left_e->get_next();
@@ -305,7 +309,7 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_
 
 	while (right_e->get_destination() != topmost)
 	{
-		right_e->get_destination()->print(); // debug
+		//right_e->get_destination()->print(); // debug
 
 		isOnLeftChainMap[right_e->get_destination()] = false;
 		right_e = right_e->get_next();
@@ -330,7 +334,7 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_
 				Face* vj_f = vj->getNext_ccw()->get_incidentFace();
 
 				P.split_face(vj, v);
-				//P.split_face(v->getPrev_ccw(vj_f), vj);
+
 				S.pop();
 			}
 			S.pop();
@@ -364,10 +368,6 @@ void Triangulation::triangulate_MonotonePolygon(DCEL& P, int nFace, Face* f_ptr_
 				Face* vj_f = vj->getNext_ccw()->get_incidentFace();
 
 				P.split_face(vj, vk);
-				//if (vjOnleftChain<0)
-					//P.split_face(x->getNext_ccw(vj_f), vj);
-				//else
-				//	P.split_face(vk->getPrev_ccw(vj_f), vj);
 
 				x = vk;
 
@@ -415,13 +415,17 @@ void Triangulation::triangulate_simple_Polygon(DCEL& simpleP)
 	list<Face>::const_iterator it = simpleP.get_faces()->begin();
 
 	for (; it != simpleP.get_faces()->end(); it++)
-		faces_ptr.push_back(const_cast<Face*>(&*it));
+	{
+		// can only triangulate simple polygon, not the one with holes
+		if (it->get_innerComponent().empty() && it->get_outerComponent()!=nullptr)
+			faces_ptr.push_back(const_cast<Face*>(&*it));
+	}
 	
 
-	for (int i = 1; i < faces_ptr.size(); i++)
+	for (int i = 0; i < faces_ptr.size(); i++)
 	{
 		cout << "face# " << i << " starts " << endl;
 		triangulate_MonotonePolygon(simpleP, 1, faces_ptr[i]);
+		cout << endl;
 	}
-
 }

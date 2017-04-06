@@ -20,7 +20,46 @@ int the_n_Edge;
 
 int main(int argc, char** argv)
 {
-	runTestCases(1);
+	int sampleChoice, caseChoice;	// must provide
+	int faceIndex;					// optional
+
+	do{
+		// please provide your test configuration [sampleChoice, caseChoice]
+		cout << " Please provide your test configuration ( int sampleChoice, int caseChoice)" << endl;
+
+		cout << " Sample choices [1-3]" << endl
+			<< "  1- a simple monotone polygon" << endl
+			<< "  2- a simple non-monotone polygon" << endl
+			<< "  3- anther simple non-monotone polygon(as shown in the book and class)" << endl;
+		cin >> sampleChoice;
+
+		cout << " Test cases choices [1-4]" << endl
+			<< "  1- construct simple polygon" << endl
+			<< "  2- make simple polygon monotone" << endl
+			<< "  3- trianguate all simple monotoned polygons" << endl
+			<< "  4- trianguate a simple monotoned polygon in the sample(need to specify your face), most complicated" << endl;
+		cin >> caseChoice;
+
+		if (caseChoice == 4)
+		{
+			cout << "provide your face index [0,maxFace#]" << endl;
+			cin >> faceIndex;
+		}
+
+		if (sampleChoice >= 1 && sampleChoice <= 3 && caseChoice >= 1 && caseChoice <= 4)
+		{
+			if (caseChoice!=4)
+				runTestCases(caseChoice, sampleChoice);
+			else
+				runTestCases(caseChoice, sampleChoice, faceIndex);
+
+			break;
+		}
+		else{
+			cout << endl << " *** warning [sampleChoice] or [caseChoice] out of range! re-try *** " << endl << endl;
+		}
+	}
+	while (1);
 
 	/*
 	// user input

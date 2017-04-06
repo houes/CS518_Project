@@ -51,4 +51,11 @@ public:
 	// TODO:
 	// DCEL* get_copy();
 
+	void clear()
+	{
+		vertices.clear();
+		edges.clear();
+		faces.clear();
+	}
+
 };
