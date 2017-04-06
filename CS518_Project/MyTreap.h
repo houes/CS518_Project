@@ -12,6 +12,14 @@ class MyTreap : public Treap_
 	EdgeNode* find_FirstEdgeNode_LeftOf(Vertex* v);
 
 	Edge* find_FirstEdge_LeftOf(Vertex* v);
+
+	bool empty()
+	{ 
+		if (root == nullptr)
+			return true;
+		else
+			return false;
+	}
 };
 
 //typedef MyTreap::Node EdgeNode;

@@ -26,5 +26,5 @@ void highlight_edge(const DCEL& data, int nFace, int nEdge);
 
 void draw_points(const vector<Point2D>& input_pts);
 
-void draw_2D_text(int EdgeIdx, int VertexIdx);
+void draw_2D_text(int FaceIdx, int EdgeIdx, int VertexIdx);
 

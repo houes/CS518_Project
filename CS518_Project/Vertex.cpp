@@ -28,3 +28,100 @@ void Vertex::print(bool newline)
 	else
 		cout << "	";
 }
+
+
+Edge* Vertex::getPrev_ccw(Face* f)
+{
+	// get the next edge in counter-clockwise
+	// prev->v->next
+	// if Face f is provided, then the incident face of this edge should match f
+
+	if (f != nullptr)
+	{
+		vector<Edge*> inciEdges = getIncidentEdges();
+		for (int i = 0; i < inciEdges.size(); i++)
+		{
+			if (inciEdges[i]->get_incidentFace() == f)
+				return inciEdges[i];
+		}
+		
+		throw invalid_argument("the specified face can not be found for any incident edge of this vertex");
+	}
+
+	Edge *prev = nullptr, *next = nullptr;
+
+	if (get_incidentEdge()->isCCW())
+	{
+		next = get_incidentEdge();
+		prev = next->get_prev();
+	}
+	else
+	{
+		prev = get_incidentEdge()->get_twin();
+		next = prev->get_next();
+	}
+
+	return prev;
+}
+
+Edge* Vertex::getNext_ccw(Face* f)
+{
+	// get the next edge in counter-clockwise
+	// prev->v->next
+	// if Face f is provided, then the incident face of this edge should match f
+
+	if (f != nullptr)
+	{
+		vector<Edge*> inciEdges = getIncidentEdges();
+		for (int i = 0; i < inciEdges.size(); i++)
+		{
+			if (inciEdges[i]->get_incidentFace() == f)
+				return inciEdges[i];
+		}
+
+		throw invalid_argument("the specified face can not be found for any incident edge of this vertex");
+	}
+
+	Edge *prev = nullptr, *next = nullptr;
+
+	if (get_incidentEdge()->isCCW())
+	{
+		next = get_incidentEdge();
+		prev = next->get_prev();
+	}
+	else
+	{
+		prev = get_incidentEdge()->get_twin();
+		next = prev->get_next();
+	}
+
+	return next;
+}
+
+vector<Edge*> Vertex::getIncidentEdges()
+{
+	Edge *prev = nullptr, *next = nullptr;
+
+	if (get_incidentEdge()->isCCW())
+	{
+		next = get_incidentEdge();
+		prev = next->get_prev();
+	}
+	else
+	{
+		prev = get_incidentEdge()->get_twin();
+		next = prev->get_next();
+	}
+
+	vector<Edge*> result;
+	
+	Edge* e = next;
+
+	do
+	{
+		result.push_back(e);
+		e = e->get_twin()->get_next();
+	} while (e != next);
+
+	return result;
+}

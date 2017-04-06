@@ -295,7 +295,7 @@ void highlight_edge(const DCEL& data, int nFace, int nEdge)
 		it3++;
 	}
 
-	draw_2D_text(idx2,idx3);
+	draw_2D_text(nFace,idx2,idx3);
 }
 
 /*
@@ -322,7 +322,7 @@ void drawText(const char *text, int length, int x, int y)
 	glMatrixMode(GL_MODELVIEW); // change current matrix mode to MODELVIEW
 }
 
-void draw_2D_text(int EdgeIdx, int VertexIdx)
+void draw_2D_text(int FaceIdx, int EdgeIdx, int VertexIdx)
 {
 	using namespace std;
 	/*Disable lighting effect because the plain text should not rely on light*/
@@ -330,15 +330,18 @@ void draw_2D_text(int EdgeIdx, int VertexIdx)
 	glEnable(GL_COLOR_MATERIAL);
 
 	// Display of computational results
-	ostringstream stringStream[2];
-	stringStream[0] << " Current Edge  #: " << EdgeIdx;
-	stringStream[1] << " Current Vertex#: " << VertexIdx;
+	ostringstream stringStream[3];
+	stringStream[0] << " Current Face  #: " << FaceIdx;
+	stringStream[1] << " Current Edge  #: " << EdgeIdx;
+	stringStream[2] << " Current Vertex#: " << VertexIdx;
 
-	string text[] = { stringStream[0].str(), stringStream[1].str() };
+
+	string text[] = { stringStream[0].str(), stringStream[1].str(), stringStream[2].str() };
 
 	glColor3f(0, 0, 0);
 	drawText(text[0].data(), text[0].size(), 0, 780);
 	drawText(text[1].data(), text[1].size(), 0, 760);
+	drawText(text[1].data(), text[1].size(), 0, 740);
 	
 	// Display instruction of keybord controls
 	stringstream keyboardctrls[5], title;

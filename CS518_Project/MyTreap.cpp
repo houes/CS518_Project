@@ -62,12 +62,16 @@ EdgeNode* MyTreap::find_FirstEdgeNode_LeftOf(Vertex* v)
 
 		if (crossp > 0) // left turn, vertex is on the right of the edge e
 		{
+			if ((bestSoFar == NULL) || isEdge1CloserToVertex(node, bestSoFar, v))
+				bestSoFar = node;
+
 			node = node->right;
 		}
 		else // right turn or vertex v is on the edge e
 		{
 			if ((bestSoFar == NULL) || isEdge1CloserToVertex(node, bestSoFar,v))
 				bestSoFar = node;
+
 			node = node->left;
 		}
 
