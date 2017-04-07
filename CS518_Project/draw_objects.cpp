@@ -6,6 +6,9 @@
 double delta = 0.005; // distance defining an edge separated into two halfedges 
 double omega = 0.035; // the length of the arrow head
 
+extern int cursorX;
+extern int cursorY;
+
 void draw_points(const vector<Point2D>& input_pts)
 {
 	// scale the pts for drawing purpose
@@ -240,36 +243,8 @@ void highlight_edge(const DCEL& data, int nFace, int nEdge)
 	nEdge = nEdge % eList.size();
 	e = eList.at(nEdge);
 
-	Vertex* v1 = e->get_origin();
-	Vertex* v2 = e->get_destination();
-
-	// draw the halfedge, shifted by a distance delta
-	double dx = delta *(v1->getY() - v2->getY()) / (*v1 - *v2).length();
-	double dy = -delta *(v1->getX() - v2->getX()) / (*v1 - *v2).length();
-		
-	glColor3f(0.8, 0.8, 0);
-	glBegin(GL_LINES);
-		glVertex2f(v1->getX() + dx, v1->getY() + dy);
-		glVertex2f(v2->getX() + dx, v2->getY() + dy);
-	glEnd();
-
-	// draw the arrow heads
-	Point2D p1, p2, p3;
-	p1 = *v2;
-	generate_an_arrow_head(10, omega, *v1, *v2, p2, p3);
-
-	glBegin(GL_TRIANGLES);
-		glVertex2f(p1.getX() + dx, p1.getY() + dy);
-		glVertex2f(p2.getX() + dx, p2.getY() + dy);
-		glVertex2f(p3.getX() + dx, p3.getY() + dy);
-	glEnd();
-
-	// draw the destination point: v2
-	glColor3f(1, 0, 0);
-	glPointSize(7);
-	glBegin(GL_POINTS);
-		glVertex2f(v2->getX() + dx, v2->getY() + dy);
-	glEnd();
+	GLfloat yellow[] = { 0.8, 0.8, 0 };
+	highlight_edge(e, yellow, true);
 
 	// find e in the storage "edges"
 	list<Edge>::const_iterator it2 = data.get_edges()->begin();
@@ -284,6 +259,7 @@ void highlight_edge(const DCEL& data, int nFace, int nEdge)
 	}
 
 	// find v2 in the storage "vertices"
+	Vertex* v2 = e->get_destination();
 	list<Vertex>::const_iterator it3 = data.get_vertices()->begin();
 	int idx3 = 0;
 	while (it3 != data.get_vertices()->end())
@@ -298,6 +274,57 @@ void highlight_edge(const DCEL& data, int nFace, int nEdge)
 	draw_2D_text(nFace,idx2,idx3);
 }
 
+void highlight_edge(Edge* e, GLfloat color[], bool show_destination_Vertex)
+{
+	Vertex* v1 = e->get_origin();
+	Vertex* v2 = e->get_destination();
+
+	// draw the halfedge, shifted by a distance delta
+	double dx = delta *(v1->getY() - v2->getY()) / (*v1 - *v2).length();
+	double dy = -delta *(v1->getX() - v2->getX()) / (*v1 - *v2).length();
+
+	glColor3fv(color);
+	glBegin(GL_LINES);
+	glVertex2f(v1->getX() + dx, v1->getY() + dy);
+	glVertex2f(v2->getX() + dx, v2->getY() + dy);
+	glEnd();
+
+	// draw the arrow heads
+	Point2D p1, p2, p3;
+	p1 = *v2;
+	generate_an_arrow_head(10, omega, *v1, *v2, p2, p3);
+
+	glBegin(GL_TRIANGLES);
+	glVertex2f(p1.getX() + dx, p1.getY() + dy);
+	glVertex2f(p2.getX() + dx, p2.getY() + dy);
+	glVertex2f(p3.getX() + dx, p3.getY() + dy);
+	glEnd();
+
+	// draw the destination point: v2
+	if (show_destination_Vertex)
+	{
+		glColor3f(1, 0, 0);
+		glPointSize(7);
+		glBegin(GL_POINTS);
+		glVertex2f(v2->getX() + dx, v2->getY() + dy);
+		glEnd();
+	}
+}
+
+void highlight_vertex(const Vertex& v)
+{
+	glPointSize(5);
+
+	glColor3f(1,0,0);
+	glBegin(GL_POINTS);
+		glVertex2f(v.getX(), v.getY());
+	glEnd();
+}
+
+void highlight_face(Face* hitting_face)
+{
+	// to be implemented
+}
 /*
 Drawing text 2D screen.
 */
@@ -330,18 +357,23 @@ void draw_2D_text(int FaceIdx, int EdgeIdx, int VertexIdx)
 	glEnable(GL_COLOR_MATERIAL);
 
 	// Display of computational results
-	ostringstream stringStream[3];
+	ostringstream stringStream[5];
 	stringStream[0] << " Current Face  #: " << FaceIdx;
 	stringStream[1] << " Current Edge  #: " << EdgeIdx;
 	stringStream[2] << " Current Vertex#: " << VertexIdx;
+	stringStream[3] << " cursorX: " << cursorX;
+	stringStream[4] << " cursorY: " << cursorY;
 
 
-	string text[] = { stringStream[0].str(), stringStream[1].str(), stringStream[2].str() };
+	string text[] = { stringStream[0].str(), stringStream[1].str(), stringStream[2].str()
+		, stringStream[3].str(), stringStream[4].str() };
 
 	glColor3f(0, 0, 0);
 	drawText(text[0].data(), text[0].size(), 0, 780);
 	drawText(text[1].data(), text[1].size(), 0, 760);
-	drawText(text[1].data(), text[1].size(), 0, 740);
+	drawText(text[2].data(), text[2].size(), 0, 740);
+	drawText(text[3].data(), text[3].size(), 0, 720);
+	drawText(text[4].data(), text[4].size(), 0, 700);
 	
 	// Display instruction of keybord controls
 	stringstream keyboardctrls[5], title;

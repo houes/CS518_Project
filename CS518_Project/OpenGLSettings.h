@@ -20,3 +20,7 @@ void display(void);
 void init (void);
 
 void keyboard(unsigned char key, int x, int y);
+
+void myMousePickingFunction(int x, int y);
+
+void myMouseFunc(int button, int state, int x, int y);

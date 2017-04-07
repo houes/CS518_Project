@@ -4,16 +4,19 @@
 
 Vertex::Vertex() :Point2D()
 {
+	ID = -1;
 	IncidentEdge = nullptr;
 }
 
 Vertex::Vertex(double x_, double y_) :Point2D(x_, y_)
 {
+	ID = -1;
 	IncidentEdge = nullptr;
 }
 
 Vertex::Vertex(double x_, double y_, Edge* IncidentEdge_) : Point2D(x_,y_)
 {
+	ID = -1;
 	IncidentEdge = IncidentEdge_;
 }
 

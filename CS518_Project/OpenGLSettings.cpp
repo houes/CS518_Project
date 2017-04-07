@@ -2,12 +2,21 @@
 #include "OpenGLSettings.h"
 #include "draw_objects.h"
 #include "DCEL.h"
+#include "PointLocation.h"
 
 using namespace std;
 
 extern DCEL data;
 extern int the_n_Face;
 extern int the_n_Edge;
+extern Vertex probe;
+extern Face* hitting_face;
+extern Edge* hitting_edge;
+extern int windowSize_x;
+extern int windowSize_y;
+
+int cursorX;
+int cursorY;
 
 /**
  * @brief this initializes the camera.
@@ -42,16 +51,20 @@ void init_camera(void)
  */
 void draw_scene(void)
 {
-	double red[]  { 1, 0, 0 };
-	double green[]{ 0, 1, 0 };
-	double blue[] { 0, 0, 1 };
-	double yellow[]{0.7, 0.7, 0};
-	double cran[] { 0, 1, 1 };
-	double* colors[] = {red,green,blue,yellow,cran};
+	GLfloat red[]  { 1, 0, 0 };
+	GLfloat green[]{ 0, 1, 0 };
+	GLfloat blue[] { 0, 0, 1 };
+	GLfloat yellow[]{0.7, 0.7, 0};
+	GLfloat cran[] { 0, 1, 1 };
+	GLfloat* colors[] = {red,green,blue,yellow,cran};
 	
 	draw_DCEL(data);
 
 	highlight_edge(data, the_n_Face, the_n_Edge);
+
+	highlight_vertex(probe);
+	highlight_edge(hitting_edge, red);
+	//highlight_face(hitting_face);
 
 	//vector<Point2D> pts{ Point2D(0, 0), Point2D(1, 1)};
 	//draw_points(pts);
@@ -120,4 +133,31 @@ void keyboard(unsigned char key, int x, int y)
 	instantly */
 	glutPostRedisplay();
 
+}
+
+/**
+* @brief myMousePickingFunction
+* This function is called at every mouse move. It starts the picking process.
+* @param x - the x position of the mouse pointer on screen.
+* @param y - the y position of the mouse pointer on screen.
+*/
+void myMousePickingFunction(int x, int y)
+{
+	cursorX = x;
+	cursorY = y;
+
+	probe = Vertex(cursorX / 600.0, (600 - cursorY) / 600.0);
+}
+
+void myMouseFunc(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) 
+	{
+		PointLocation pl;
+		hitting_edge = pl.find_edge_above_vertex(&data, probe);
+		//hitting_face = pl.find_polygon_contains_vertex(&data, probe);
+	}
+	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+		
+	}
 }

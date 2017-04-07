@@ -162,6 +162,7 @@
     <ClInclude Include="LineSegment.h" />
     <ClInclude Include="OpenGLSettings.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="PointLocation.h" />
     <ClInclude Include="testcases.h" />
     <ClInclude Include="Treap.h" />
     <ClInclude Include="Triangulation.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyTreap.cpp" />
     <ClCompile Include="OpenGLSettings.cpp" />
+    <ClCompile Include="PointLocation.cpp" />
     <ClCompile Include="testcases.cpp" />
     <ClCompile Include="Triangulation.cpp" />
     <ClCompile Include="Vector.cpp" />

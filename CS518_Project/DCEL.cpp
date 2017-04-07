@@ -329,3 +329,33 @@ void DCEL::construct_SimplePolygon(const vector<Vertex>& list)
 
 
 }
+
+void DCEL::assignIDsAllEntities()
+{
+	// assign each face, edge and vertex a unique ID, to distinguwish them later
+
+	list<Vertex>::iterator it1	= vertices.begin(); 
+	list<Edge>::iterator it2	= edges.begin();
+	list<Face>::iterator it3	= faces.begin();
+
+	int idx = 0;
+	while (it1 != vertices.end())
+	{
+		it1->setID(idx++);
+		it1++;
+	}
+
+	idx = 0;
+	while (it2 != edges.end())
+	{
+		it2->setID(idx++);
+		it2++;
+	}
+
+	idx = 0;
+	while (it3 != faces.end())
+	{
+		it3->setID(idx++);
+		it3++;
+	}
+}

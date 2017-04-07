@@ -6,6 +6,8 @@ class Face;
 
 class Edge
 {
+	int ID;
+
 	Vertex* Origin;
 	Edge* Twin;
 	Face* IncidentFace;
@@ -13,7 +15,7 @@ class Edge
 	Edge* Prev;
 
 public:
-	Edge(){ Origin = nullptr; Twin = nullptr; IncidentFace = nullptr; Next = nullptr; Prev = nullptr; }
+	Edge(){ ID = -1; Origin = nullptr; Twin = nullptr; IncidentFace = nullptr; Next = nullptr; Prev = nullptr; }
 	Edge(Vertex* Origin_, Edge* Twin_, Face* IncidentFace_, Edge* Next_, Edge* Prev_)
 	{
 		Origin = Origin_;
@@ -22,6 +24,9 @@ public:
 		Prev = Prev_;
 		IncidentFace = IncidentFace_;
 	}
+
+	void setID(int ID_){ ID = ID_; }
+	int  getID(){ return ID; }
 
 	void set_origin(Vertex* v){ Origin = v; }
 	void set_twin(Edge* e){ Twin = e; }

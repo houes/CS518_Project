@@ -22,7 +22,13 @@ using namespace std;
 
 void draw_DCEL(const DCEL& data);
 
+void highlight_vertex(const Vertex& v);
+
 void highlight_edge(const DCEL& data, int nFace, int nEdge);
+
+void highlight_edge(Edge* e, GLfloat color[], bool show_destination_Vertex = false);
+
+void highlight_face(Face* f);
 
 void draw_points(const vector<Point2D>& input_pts);
 

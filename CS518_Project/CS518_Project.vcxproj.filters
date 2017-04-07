@@ -57,6 +57,9 @@
     <ClInclude Include="MyTreap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PointLocation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="draw_objects.cpp">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyTreap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLocation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

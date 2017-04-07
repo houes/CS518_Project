@@ -70,6 +70,8 @@ public:
 	// for triangulate_MonotonePolygon()
 	bool isVerticesOnSameChain(Vertex* v1, Vertex* v2);
 
+	void assignIDsAllEntities();
+
 	void clear();
 };
 

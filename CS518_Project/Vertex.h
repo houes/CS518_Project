@@ -39,7 +39,12 @@ public:
 		setY(y + v.getY()); 
 	}
 
-	Vector  operator-(const Vertex& other) 
+	Vertex operator+(Vector v) const
+	{
+		return  Vertex(x + v.getX(), y + v.getY());
+	}
+
+	Vector  operator-(const Vertex& other) const
 	{ 
 		return Vector(getX() - other.getX(), getY() - other.getY());
 	}

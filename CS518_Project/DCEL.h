@@ -64,4 +64,5 @@ public:
 		faces.clear();
 	}
 
+	void assignIDsAllEntities();
 };

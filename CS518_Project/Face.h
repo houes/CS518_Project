@@ -5,14 +5,20 @@ class Edge;
 
 class Face
 {
+	int ID;
+
 	Edge*		  OuterComponent;
 	vector<Edge*> InnerComponents;
 public:
-	Face(){ OuterComponent = nullptr; InnerComponents.clear(); }
+	Face(){ ID = -1; OuterComponent = nullptr; InnerComponents.clear(); }
 	Face(Edge *OuterComponent_, vector<Edge*> InnerComponents_)
 	{
-		OuterComponent = OuterComponent_; InnerComponents = InnerComponents_;
+		ID = -1;
+		OuterComponent = OuterComponent_; 
+		InnerComponents = InnerComponents_;
 	}
+
+	void setID(int ID_){ ID = ID_; }
 
 	void setOuterComponent(Edge* e){ OuterComponent = e; }
 	void setInnerComponents(vector<Edge*> elist){ InnerComponents = elist; }
