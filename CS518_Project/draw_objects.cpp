@@ -3,6 +3,7 @@
 #include "helperFunctions.h"
 #include <sstream>
 #include <iomanip>
+#include <map>
 
 bool showHalfEdge = true;
 
@@ -424,5 +425,44 @@ void draw_2D_text(int FaceIdx, int EdgeIdx, int VertexIdx)
 
 	glDisable(GL_COLOR_MATERIAL);
 	//glEnable(GL_LIGHTING);
+}
 
+void draw_2D_text(MAKE_STEP step)
+{
+	using namespace std;
+	/*Disable lighting effect because the plain text should not rely on light*/
+	//glDisable(GL_LIGHTING);
+	glEnable(GL_COLOR_MATERIAL);
+
+	map<int, string> EnumMap; 
+	EnumMap[0] = "ADD_VERTEX";
+	EnumMap[1] = "POLYGON";
+	EnumMap[2] = "MONOTONE";
+	EnumMap[3] = "TRIANGULATION";
+
+	string additional="";
+
+	if ((int)step == 0)
+		additional = " ( mouse left click on screen )";
+
+	ostringstream stringStream[10];
+	stringStream[0] << " Current Step: " << EnumMap[(int)step] << additional;
+	stringStream[1] << "    NEXT Step: " << EnumMap[((int)step+1)%4];
+
+	string text[] = { stringStream[0].str(), stringStream[1].str()};
+
+	glColor3f(0, 0, 0);
+	drawText(text[0].data(), text[0].size(), 0, 620);
+	drawText(text[1].data(), text[1].size(), 0, 600);
+
+	// Display instruction of keybord controls
+	stringstream keyboardctrls[5], title;
+	title << " keyboard instructions:";
+	keyboardctrls[0] << " 'm': go to next step";
+
+	drawText(title.str().data(), title.str().size(), 480, 780);
+	drawText(keyboardctrls[0].str().data(), keyboardctrls[0].str().size(), 480, 700);
+
+	glDisable(GL_COLOR_MATERIAL);
+	//glEnable(GL_LIGHTING);
 }

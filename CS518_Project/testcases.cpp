@@ -13,7 +13,8 @@ extern Edge* hitting_edge;
 extern double cursorX;
 extern double cursorY;
 
-void assignIDstoVertices(vector<Vertex>& list);
+// user customized vertices
+vector<Vertex> c_v_list;
 
 void runTestCases(int caseID, int sampleID, int faceIdx_)
 {
@@ -33,28 +34,23 @@ void runTestCases(int caseID, int sampleID, int faceIdx_)
 		Vertex(813, -419), Vertex(737,-362), Vertex(709,-536), Vertex(795,-649), 
 		Vertex(890, -594), Vertex(991, -680), Vertex(968, -491), Vertex(1109,-535) };
 
-	assignIDstoVertices(list1);
-	assignIDstoVertices(list2);
-	assignIDstoVertices(list3);
-
 	scalePointSet(list1);
 	scalePointSet(list2);
 	scalePointSet(list3);
 
 	vector<vector<Vertex>> samples = { list1, list2, list3 };
-
+	
 	//// debug -start
 	//Triangulation tri;
 	//data.construct_SimplePolygon(list3);
 	//tri.triangulate_simple_Polygon(data);
-
 	//return;
 	//// debug - end
 
 	// 2. test different cases
 
 	// 2.0 choose your test sample
-	vector<Vertex> sample = samples[sampleID-1];
+	vector<Vertex> sample = samples[sampleID-1]; 	//c_v_list = sample;
 
 	// 2.2 start testing
 	switch (caseID)

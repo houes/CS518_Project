@@ -24,6 +24,8 @@ Edge* hitting_edge = nullptr;
 int windowSize_x=600;
 int windowSize_y=600;
 
+bool user_customized_vertices = false;
+
 int main(int argc, char** argv)
 {
 	//for debug
@@ -36,11 +38,19 @@ int main(int argc, char** argv)
 		// please provide your test configuration [sampleChoice, caseChoice]
 		cout << " Please provide your test configuration ( int sampleChoice, int caseChoice)" << endl;
 
-		cout << " Sample choices [1-3]" << endl
+		cout << " Sample choices [1-4]" << endl
 			<< "  1- a simple monotone polygon" << endl
 			<< "  2- a simple non-monotone polygon" << endl
-			<< "  3- anther simple non-monotone polygon(as shown in the book and class, most complicated)" << endl;
+			<< "  3- anther simple non-monotone polygon(as shown in the book and class, most complicated)"<<endl 
+			<< "  4- user defined vertices " << endl;
 		cin >> sampleChoice;
+
+		// customized vertices, added using mouse click in OpenGLSetting.cpp
+		if (sampleChoice == 4)
+		{
+			user_customized_vertices = true;
+			break;
+		}
 
 		cout << " Test cases choices [1-4]" << endl
 			<< "  1- construct simple polygon" << endl
@@ -55,7 +65,7 @@ int main(int argc, char** argv)
 			cin >> faceIndex;
 		}
 
-		if (sampleChoice >= 1 && sampleChoice <= 3 && caseChoice >= 1 && caseChoice <= 4)
+		if (sampleChoice >= 1 && sampleChoice <= 4 && caseChoice >= 1 && caseChoice <= 4)
 		{
 			if (caseChoice!=4)
 				runTestCases(caseChoice, sampleChoice);

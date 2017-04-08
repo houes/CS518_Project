@@ -18,6 +18,9 @@ draw_objects.h
     #include <gl/glut.h>
 #endif
 
+extern enum MAKE_STEP;
+//extern MAKE_STEP currentSTEP;
+
 using namespace std;
 
 void draw_DCEL(const DCEL& data);
@@ -33,4 +36,6 @@ void highlight_face(Face* f);
 void draw_points(const vector<Point2D>& input_pts);
 
 void draw_2D_text(int FaceIdx, int EdgeIdx, int VertexIdx);
+
+void draw_2D_text(MAKE_STEP step);
 

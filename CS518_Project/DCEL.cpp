@@ -259,8 +259,11 @@ Vertex* DCEL::get_an_vertex_at(int pos)
 	return &*it;
 }
 
-void DCEL::construct_SimplePolygon(const vector<Vertex>& list)
+bool DCEL::construct_SimplePolygon(const vector<Vertex>& list)
 {
+	// construct a simple polygon from ordered vertices provided, 
+	// if not possible, return false;
+
 	if (list.empty() || list.size() == 1)
 		throw invalid_argument("not enough vertices(<=1)");
 
@@ -284,6 +287,7 @@ void DCEL::construct_SimplePolygon(const vector<Vertex>& list)
 		catch (std::exception& e)
 		{
 			cout << "exception: " << e.what() << endl << endl;
+			return false;
 		}
 
 
@@ -303,6 +307,7 @@ void DCEL::construct_SimplePolygon(const vector<Vertex>& list)
 	catch (std::exception& e)
 	{
 		cout << "exception: " << e.what() << endl << endl;
+		return false;
 	}
 
 	// compute whether the polygon traverse ccw or cw when finally spliced(connected)
@@ -327,6 +332,7 @@ void DCEL::construct_SimplePolygon(const vector<Vertex>& list)
 
 	split_face(get_an_edge_at(1), get_an_vertex_at(vertices.size() - 1), polygon_ccw);
 
+	return true;
 
 }
 

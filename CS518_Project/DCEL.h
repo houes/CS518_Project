@@ -41,7 +41,7 @@ public:
 	void	split_face(Vertex* v1, Vertex* v2);
 
 	// this construct a simple polygon from a set of vertices
-	void	construct_SimplePolygon(const vector<Vertex>& list);
+	bool	construct_SimplePolygon(const vector<Vertex>& list);
 
 
 	Edge*	get_an_edge_at(int pos);   // get a pointer to an edge   in the list at pos

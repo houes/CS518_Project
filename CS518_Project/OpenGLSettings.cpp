@@ -3,6 +3,8 @@
 #include "draw_objects.h"
 #include "DCEL.h"
 #include "PointLocation.h"
+#include "helperFunctions.h"
+#include "Triangulation.h"
 
 using namespace std;
 
@@ -17,9 +19,13 @@ extern int windowSize_y;
 extern bool showHalfEdge;
 extern double delta;  
 extern double omega;
+extern vector<Vertex> c_v_list;
+extern bool user_customized_vertices;
 
 double cursorX;
 double cursorY;
+enum MAKE_STEP{ADD_VERTEX,POLYGON, MONOTONE, TRIANGULATION };
+MAKE_STEP currentSTEP = MAKE_STEP::ADD_VERTEX;
 
 /**
  * @brief this initializes the camera.
@@ -63,7 +69,14 @@ void draw_scene(void)
 	
 	draw_DCEL(data);
 
-	highlight_edge(data, the_n_Face, the_n_Edge);
+	if (!user_customized_vertices || currentSTEP != MAKE_STEP::ADD_VERTEX)
+		highlight_edge(data, the_n_Face, the_n_Edge);
+
+	if (user_customized_vertices)
+		draw_2D_text(currentSTEP);
+
+	for (int i = 0; i < c_v_list.size(); i++)
+		highlight_vertex(c_v_list[i]);
 
 	highlight_vertex(probe);
 
@@ -123,6 +136,8 @@ void init (void)
 
 void keyboard(unsigned char key, int x, int y)
 {
+	Triangulation tri;
+
 	switch (key)
 	{
 		case  'f':
@@ -147,6 +162,37 @@ void keyboard(unsigned char key, int x, int y)
 
 			break;
 		}
+		case  'm':
+			switch (currentSTEP)
+			{
+				case MAKE_STEP::ADD_VERTEX:
+					if (!c_v_list.empty())
+					{
+						if (!data.construct_SimplePolygon(c_v_list))
+							currentSTEP = MAKE_STEP::TRIANGULATION;
+						else
+							currentSTEP = MAKE_STEP::POLYGON;
+					}
+					break;
+				case MAKE_STEP::POLYGON:
+					tri.makeMonotone(data);
+					currentSTEP = MAKE_STEP::MONOTONE;
+					break;
+				case MAKE_STEP::MONOTONE:
+					tri.triangulate_simple_Polygon(data);
+					data.assignIDsAllEntities();
+					currentSTEP = MAKE_STEP::TRIANGULATION;
+					break;
+				case MAKE_STEP::TRIANGULATION:
+					c_v_list.clear();
+					data.clear();
+					hitting_face = nullptr;
+					hitting_edge = nullptr;
+					currentSTEP = MAKE_STEP::ADD_VERTEX;
+					break;
+				default: break;
+			}
+			break;
 		default:  break;
 	}
 
@@ -178,17 +224,29 @@ void myMouseFunc(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) 
 	{
-		PointLocation pl;
-		hitting_edge = pl.find_edge_right_below_vertex(&data, probe);
+		if (!user_customized_vertices || currentSTEP != MAKE_STEP::ADD_VERTEX)
+		{
+			// 1. point location class
+			PointLocation pl;
+			hitting_edge = pl.find_edge_right_below_vertex(&data, probe);
 
-		if (hitting_edge != nullptr)
-			hitting_face= pl.find_face_contains_vertex(hitting_edge, probe);
+			if (hitting_edge != nullptr)
+				hitting_face = pl.find_face_contains_vertex(hitting_edge, probe);
+			else
+				hitting_face = data.get_outmost_face();
+
+			cout << "face# " << hitting_face->getID() << endl;
+		}
 		else
-			hitting_face = data.get_outmost_face();
-
-		cout << "face# " << hitting_face->getID() << endl;
+		{
+			// 2. customized vertices - add
+			if (currentSTEP == MAKE_STEP::ADD_VERTEX)
+				c_v_list.push_back(Vertex(cursorX, cursorY));
+		}
 	}
-	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+	else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
 		
+
+	
 	}
 }
