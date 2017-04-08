@@ -19,10 +19,12 @@ public:
 	}
 
 	void setID(int ID_){ ID = ID_; }
+	int  getID(){ return ID; }
 
 	void setOuterComponent(Edge* e){ OuterComponent = e; }
 	void setInnerComponents(vector<Edge*> elist){ InnerComponents = elist; }
 	void addInnerComponent(Edge* e){ InnerComponents.push_back(e); }
+	bool hasInnerComponent() const { return !InnerComponents.empty(); }
 
 	Edge*			get_outerComponent() const { return OuterComponent; }
 	vector<Edge*>	get_innerComponent() const { return InnerComponents; }

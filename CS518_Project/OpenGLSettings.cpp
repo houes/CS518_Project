@@ -14,9 +14,12 @@ extern Face* hitting_face;
 extern Edge* hitting_edge;
 extern int windowSize_x;
 extern int windowSize_y;
+extern bool showHalfEdge;
+extern double delta;  
+extern double omega;
 
-int cursorX;
-int cursorY;
+double cursorX;
+double cursorY;
 
 /**
  * @brief this initializes the camera.
@@ -63,8 +66,11 @@ void draw_scene(void)
 	highlight_edge(data, the_n_Face, the_n_Edge);
 
 	highlight_vertex(probe);
-	highlight_edge(hitting_edge, red);
-	//highlight_face(hitting_face);
+
+	if (hitting_edge != nullptr)
+		highlight_edge(hitting_edge, red);
+	if (hitting_face != nullptr)
+		highlight_face(hitting_face);
 
 	//vector<Point2D> pts{ Point2D(0, 0), Point2D(1, 1)};
 	//draw_points(pts);
@@ -125,6 +131,22 @@ void keyboard(unsigned char key, int x, int y)
 		case  'e':
 			the_n_Edge++;
 			break;
+		case 'h':
+		{
+			showHalfEdge = !showHalfEdge;
+
+			if (delta == 0.005)
+				delta = 0;
+			else
+				delta = 0.005;
+
+			if (omega == 0.035)
+				omega = 0;
+			else
+				omega = 0.035;
+
+			break;
+		}
 		default:  break;
 	}
 
@@ -143,10 +165,13 @@ void keyboard(unsigned char key, int x, int y)
 */
 void myMousePickingFunction(int x, int y)
 {
-	cursorX = x;
-	cursorY = y;
+	cursorX = x / (double)windowSize_x;
+	cursorY = (windowSize_y - y) / (double)windowSize_y;
 
-	probe = Vertex(cursorX / 600.0, (600 - cursorY) / 600.0);
+	probe.setX(cursorX);
+	probe.setY(cursorY);
+
+	glutPostRedisplay();
 }
 
 void myMouseFunc(int button, int state, int x, int y)
@@ -154,8 +179,14 @@ void myMouseFunc(int button, int state, int x, int y)
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) 
 	{
 		PointLocation pl;
-		hitting_edge = pl.find_edge_above_vertex(&data, probe);
-		//hitting_face = pl.find_polygon_contains_vertex(&data, probe);
+		hitting_edge = pl.find_edge_right_below_vertex(&data, probe);
+
+		if (hitting_edge != nullptr)
+			hitting_face= pl.find_face_contains_vertex(hitting_edge, probe);
+		else
+			hitting_face = data.get_outmost_face();
+
+		cout << "face# " << hitting_face->getID() << endl;
 	}
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 		

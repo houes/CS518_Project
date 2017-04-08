@@ -65,4 +65,5 @@ public:
 	}
 
 	void assignIDsAllEntities();
+	Face* get_outmost_face();
 };

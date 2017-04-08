@@ -432,6 +432,4 @@ void Triangulation::triangulate_simple_Polygon(DCEL& simpleP)
 
 	}
 	cout << " *** End triangulating monotone polygons ***" << endl;
-
-	simpleP.assignIDsAllEntities();
 }

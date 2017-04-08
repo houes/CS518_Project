@@ -359,3 +359,21 @@ void DCEL::assignIDsAllEntities()
 		it3++;
 	}
 }
+
+Face* DCEL::get_outmost_face()
+{
+	// for now, I assume there is only ONE face that has innercomponnet
+	// which is the outmost face, if there are other faces having innercomponent,
+	// needs to change this function
+
+	list<Face>::iterator it = faces.begin();
+
+	while (it != faces.end())
+	{
+		if (it->hasInnerComponent())
+			break;
+		it++;
+	}
+
+	return &*it;
+}

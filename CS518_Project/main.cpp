@@ -18,56 +18,57 @@ DCEL data;
 int the_n_Face;
 int the_n_Edge;
 Vertex probe;
-Face* hitting_face;
-Edge* hitting_edge;
+Face* hitting_face = nullptr;
+Edge* hitting_edge = nullptr;
 
 int windowSize_x=600;
 int windowSize_y=600;
 
 int main(int argc, char** argv)
 {
-	runTestCases(1, 2);
+	//for debug
+	//runTestCases(1, 2);
 
-	//int sampleChoice, caseChoice;	// must provide
-	//int faceIndex;					// optional
+	int sampleChoice, caseChoice;	// must provide
+	int faceIndex;					// optional
 
-	//do{
-	//	// please provide your test configuration [sampleChoice, caseChoice]
-	//	cout << " Please provide your test configuration ( int sampleChoice, int caseChoice)" << endl;
+	do{
+		// please provide your test configuration [sampleChoice, caseChoice]
+		cout << " Please provide your test configuration ( int sampleChoice, int caseChoice)" << endl;
 
-	//	cout << " Sample choices [1-3]" << endl
-	//		<< "  1- a simple monotone polygon" << endl
-	//		<< "  2- a simple non-monotone polygon" << endl
-	//		<< "  3- anther simple non-monotone polygon(as shown in the book and class, most complicated)" << endl;
-	//	cin >> sampleChoice;
+		cout << " Sample choices [1-3]" << endl
+			<< "  1- a simple monotone polygon" << endl
+			<< "  2- a simple non-monotone polygon" << endl
+			<< "  3- anther simple non-monotone polygon(as shown in the book and class, most complicated)" << endl;
+		cin >> sampleChoice;
 
-	//	cout << " Test cases choices [1-4]" << endl
-	//		<< "  1- construct simple polygon" << endl
-	//		<< "  2- make simple polygon monotone" << endl
-	//		<< "  3- trianguate all simple monotoned polygons" << endl
-	//		<< "  4- trianguate a simple monotoned polygon in the sample(need to specify your face)" << endl;
-	//	cin >> caseChoice;
+		cout << " Test cases choices [1-4]" << endl
+			<< "  1- construct simple polygon" << endl
+			<< "  2- make simple polygon monotone" << endl
+			<< "  3- trianguate all simple monotoned polygons" << endl
+			<< "  4- trianguate a simple monotoned polygon in the sample(need to specify your face)" << endl;
+		cin >> caseChoice;
 
-	//	if (caseChoice == 4)
-	//	{
-	//		cout << "provide your face index [0,maxFace#]" << endl;
-	//		cin >> faceIndex;
-	//	}
+		if (caseChoice == 4)
+		{
+			cout << "provide your face index [0,maxFace#]" << endl;
+			cin >> faceIndex;
+		}
 
-	//	if (sampleChoice >= 1 && sampleChoice <= 3 && caseChoice >= 1 && caseChoice <= 4)
-	//	{
-	//		if (caseChoice!=4)
-	//			runTestCases(caseChoice, sampleChoice);
-	//		else
-	//			runTestCases(caseChoice, sampleChoice, faceIndex);
+		if (sampleChoice >= 1 && sampleChoice <= 3 && caseChoice >= 1 && caseChoice <= 4)
+		{
+			if (caseChoice!=4)
+				runTestCases(caseChoice, sampleChoice);
+			else
+				runTestCases(caseChoice, sampleChoice, faceIndex);
 
-	//		break;
-	//	}
-	//	else{
-	//		cout << endl << " *** warning [sampleChoice] or [caseChoice] out of range! re-try *** " << endl << endl;
-	//	}
-	//}
-	//while (1);
+			break;
+		}
+		else{
+			cout << endl << " *** warning [sampleChoice] or [caseChoice] out of range! re-try *** " << endl << endl;
+		}
+	}
+	while (1);
 
 	/*
 	// user input

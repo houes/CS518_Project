@@ -8,9 +8,11 @@ public:
 	PointLocation(){}
 	PointLocation(DCEL* P_){ P = P_; }
 
-	Edge* find_edge_above_vertex(DCEL* P, Vertex& v);
+	Edge* find_edge_right_below_vertex(DCEL* P, Vertex& v);
 
-	Face* find_polygon_contains_vertex(DCEL* P,  Vertex& v);
+	Face* find_face_contains_vertex(DCEL* P,  Vertex& v);
+
+	Face* find_face_contains_vertex(Edge* edge_below_vertex, Vertex& v);
 };
 
 struct LessThanByXcoord

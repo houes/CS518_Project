@@ -2,12 +2,15 @@
 #include "draw_objects.h"
 #include "helperFunctions.h"
 #include <sstream>
+#include <iomanip>
+
+bool showHalfEdge = true;
 
 double delta = 0.005; // distance defining an edge separated into two halfedges 
 double omega = 0.035; // the length of the arrow head
 
-extern int cursorX;
-extern int cursorY;
+extern double cursorX;
+extern double cursorY;
 
 void draw_points(const vector<Point2D>& input_pts)
 {
@@ -321,9 +324,37 @@ void highlight_vertex(const Vertex& v)
 	glEnd();
 }
 
-void highlight_face(Face* hitting_face)
+void highlight_face(Face* f)
 {
-	// to be implemented
+	if (f->hasInnerComponent())
+	{
+		;// does not draw the outmost face
+	}
+	else
+	{
+		// precondition: every face should be a triangle
+		Edge* e_s = f->get_outerComponent();
+		Edge* e = e_s;
+		int idx = 0;
+		do
+		{
+			e = e->get_next();
+			idx++;
+		} while (e != e_s);
+
+		if (idx == 3)
+		{
+			Vertex *v1 = e_s->get_origin();
+			Vertex *v2 = e_s->get_destination();
+			Vertex *v3 = e_s->get_next()->get_destination();
+			glColor3f(0, 0.6, 0.3);
+			glBegin(GL_TRIANGLES);
+			glVertex2f(v1->getX(), v1->getY());
+			glVertex2f(v2->getX(), v2->getY());
+			glVertex2f(v3->getX(), v3->getY());
+			glEnd();
+		}
+	}
 }
 /*
 Drawing text 2D screen.
@@ -357,33 +388,39 @@ void draw_2D_text(int FaceIdx, int EdgeIdx, int VertexIdx)
 	glEnable(GL_COLOR_MATERIAL);
 
 	// Display of computational results
-	ostringstream stringStream[5];
+	string showHalfEdge_s = showHalfEdge ? "YES" : "NO";
+
+	ostringstream stringStream[10];
 	stringStream[0] << " Current Face  #: " << FaceIdx;
 	stringStream[1] << " Current Edge  #: " << EdgeIdx;
 	stringStream[2] << " Current Vertex#: " << VertexIdx;
-	stringStream[3] << " cursorX: " << cursorX;
-	stringStream[4] << " cursorY: " << cursorY;
+	stringStream[3] << " Show HalfEdge? : " << showHalfEdge_s;
+	stringStream[4].precision(2); stringStream[4] << " cursorX: " << left << setw(4) << cursorX;
+	stringStream[5].precision(2); stringStream[5] << " cursorY: " << left << setw(4) << cursorY;
 
 
 	string text[] = { stringStream[0].str(), stringStream[1].str(), stringStream[2].str()
-		, stringStream[3].str(), stringStream[4].str() };
+		, stringStream[3].str(), stringStream[4].str(), stringStream[5].str() };
 
 	glColor3f(0, 0, 0);
 	drawText(text[0].data(), text[0].size(), 0, 780);
 	drawText(text[1].data(), text[1].size(), 0, 760);
 	drawText(text[2].data(), text[2].size(), 0, 740);
 	drawText(text[3].data(), text[3].size(), 0, 720);
-	drawText(text[4].data(), text[4].size(), 0, 700);
+	drawText(text[4].data(), text[4].size(), 0, 680);
+	drawText(text[5].data(), text[5].size(), 0, 660);
 	
 	// Display instruction of keybord controls
 	stringstream keyboardctrls[5], title;
 	title << " keyboard instructions:";
 	keyboardctrls[0] << " 'f': change face" ;
 	keyboardctrls[1] << " 'e': change edge " ;
+	keyboardctrls[2] << " 'h': halfEdge turn on/off ";
 
-	drawText(title.str().data(), title.str().size(), 500, 780);
-	drawText(keyboardctrls[0].str().data(), keyboardctrls[0].str().size(), 500, 760);
-	drawText(keyboardctrls[1].str().data(), keyboardctrls[1].str().size(), 500, 740);
+	drawText(title.str().data(), title.str().size(), 480, 780);
+	drawText(keyboardctrls[0].str().data(), keyboardctrls[0].str().size(), 480, 760);
+	drawText(keyboardctrls[1].str().data(), keyboardctrls[1].str().size(), 480, 740);
+	drawText(keyboardctrls[2].str().data(), keyboardctrls[2].str().size(), 480, 720);
 
 	glDisable(GL_COLOR_MATERIAL);
 	//glEnable(GL_LIGHTING);

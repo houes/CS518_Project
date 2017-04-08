@@ -10,8 +10,8 @@ extern DCEL	data;
 extern Vertex probe;
 extern Face* hitting_face;
 extern Edge* hitting_edge;
-extern int cursorX;
-extern int cursorY;
+extern double cursorX;
+extern double cursorY;
 
 void assignIDstoVertices(vector<Vertex>& list);
 
@@ -43,16 +43,13 @@ void runTestCases(int caseID, int sampleID, int faceIdx_)
 
 	vector<vector<Vertex>> samples = { list1, list2, list3 };
 
-	// debug -start
-	Triangulation tri;
-	data.construct_SimplePolygon(list3);
-	tri.triangulate_simple_Polygon(data);
-	PointLocation pl;
-	probe = Vertex(cursorX / 600.0, (600 - cursorY) / 600.0);
-	hitting_edge = pl.find_edge_above_vertex(&data, probe);
-	hitting_face = pl.find_polygon_contains_vertex(&data, probe);
-	return;
-	// debug - end
+	//// debug -start
+	//Triangulation tri;
+	//data.construct_SimplePolygon(list3);
+	//tri.triangulate_simple_Polygon(data);
+
+	//return;
+	//// debug - end
 
 	// 2. test different cases
 
@@ -104,6 +101,8 @@ void runTestCases(int caseID, int sampleID, int faceIdx_)
 		default:
 			break;
 	}
+
+	data.assignIDsAllEntities();
 
 	//// case 1:
 	//data.create_an_edge(Vertex(0.1, 0.1), Vertex(0.15, 0.7));
