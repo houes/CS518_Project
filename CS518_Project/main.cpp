@@ -3,7 +3,7 @@
 					and Plannar point location using persistent search trees.
 	Author:		Guangyu Hou
 	Institute:	Iowa State University
-	Date:		3/30/2017
+	Date:		04/06/2017
 **/
 #pragma once
 #include <vector>
@@ -39,10 +39,10 @@ int main(int argc, char** argv)
 		cout << " Please provide your test configuration ( int sampleChoice, int caseChoice)" << endl;
 
 		cout << " Sample choices [1-4]" << endl
-			<< "  1- a simple monotone polygon" << endl
-			<< "  2- a simple non-monotone polygon" << endl
-			<< "  3- anther simple non-monotone polygon(as shown in the book and class, most complicated)"<<endl 
-			<< "  4- user defined vertices " << endl;
+			<< "  1- A simple monotone polygon" << endl
+			<< "  2- A simple non-monotone polygon" << endl
+			<< "  3- Anther simple non-monotone polygon(as shown in the book and class, most complicated)"<<endl 
+			<< "  4- User defined vertices " << endl;
 		cin >> sampleChoice;
 
 		// customized vertices, added using mouse click in OpenGLSetting.cpp
@@ -53,10 +53,10 @@ int main(int argc, char** argv)
 		}
 
 		cout << " Test cases choices [1-4]" << endl
-			<< "  1- construct simple polygon" << endl
-			<< "  2- make simple polygon monotone" << endl
-			<< "  3- trianguate all simple monotoned polygons" << endl
-			<< "  4- trianguate a simple monotoned polygon in the sample(need to specify your face)" << endl;
+			<< "  1- Construct simple polygon" << endl
+			<< "  2- Make simple polygon monotone" << endl
+			<< "  3- Trianguate all simple monotoned polygons" << endl
+			<< "  4- Trianguate a simple monotoned polygon in the sample(need to specify your face)" << endl;
 		cin >> caseChoice;
 
 		if (caseChoice == 4)
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(windowSize_x, windowSize_y);
 	glutInitWindowPosition(300, 50);
-	glutCreateWindow("CS518-Project:  Polygon Triangulation");
+	glutCreateWindow("CS518-Project:  Polygon Triangulation by Guangyu Hou");
 	init();
 	glutPassiveMotionFunc(myMousePickingFunction);
 	// specify the mouse click events to opengl

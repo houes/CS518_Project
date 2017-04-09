@@ -25,7 +25,7 @@ using namespace std;
 
 void draw_DCEL(const DCEL& data);
 
-void highlight_vertex(const Vertex& v);
+void highlight_vertex(const Vertex& v, GLfloat color[]);
 
 void highlight_edge(const DCEL& data, int nFace, int nEdge);
 

@@ -65,6 +65,7 @@ void draw_scene(void)
 	GLfloat blue[] { 0, 0, 1 };
 	GLfloat yellow[]{0.7, 0.7, 0};
 	GLfloat cran[] { 0, 1, 1 };
+	GLfloat purple[] { 1, 0, 1 };
 	GLfloat* colors[] = {red,green,blue,yellow,cran};
 	
 	draw_DCEL(data);
@@ -76,9 +77,9 @@ void draw_scene(void)
 		draw_2D_text(currentSTEP);
 
 	for (int i = 0; i < c_v_list.size(); i++)
-		highlight_vertex(c_v_list[i]);
+		highlight_vertex(c_v_list[i],red);
 
-	highlight_vertex(probe);
+	highlight_vertex(probe,red);
 
 	if (hitting_edge != nullptr)
 		highlight_edge(hitting_edge, red);

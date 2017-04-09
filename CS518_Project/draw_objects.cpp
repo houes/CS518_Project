@@ -315,11 +315,11 @@ void highlight_edge(Edge* e, GLfloat color[], bool show_destination_Vertex)
 	}
 }
 
-void highlight_vertex(const Vertex& v)
+void highlight_vertex(const Vertex& v, GLfloat color[])
 {
 	glPointSize(5);
 
-	glColor3f(1,0,0);
+	glColor3fv(color);
 	glBegin(GL_POINTS);
 		glVertex2f(v.getX(), v.getY());
 	glEnd();

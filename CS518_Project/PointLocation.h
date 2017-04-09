@@ -1,3 +1,11 @@
+/**
+CS518, PointLocation.h
+Purpose: Implementation Point Location class
+
+@author Guangyu Hou
+@version 0.0 04/08/17
+*/
+
 #pragma once
 #include "DCEL.h"
 
