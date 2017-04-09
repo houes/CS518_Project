@@ -1,11 +1,5 @@
-# CS518_Proje
+# CS518 Class Project
 A Computational Geomemtry Class Project that implements DCEL data struture and Polygon triangulation as well as Plannar point location using persistent search trees.
-
-CS 518 Final Project Report
-===========================
-
-DCEL Data Structure, Triangulation and Point Location Implementation
---------------------------------------------------------------------
 
 Guangyu Hou
 
@@ -41,7 +35,7 @@ as shown below.
 
 <img src="media/image2.PNG" width="592" height="218" />
 
-<img src="media/image3.png" width="154" height="163" /><img src="media/image4.png" width="154" height="163" /><img src="media/image5.png" width="154" height="163" /><img src="media/image6.png" width="154" height="163" />
+<img src="media/image3.PNG" width="154" height="163" /><img src="media/image4.PNG" width="154" height="163" /><img src="media/image5.PNG" width="154" height="163" /><img src="media/image6.PNG" width="154" height="163" />
 
 Polygon 1 Polygon 2 Polygon 3 User defined polygon
 
@@ -58,8 +52,8 @@ The four test cases are basically the implementation of
 4.  Triangulate a specific monotone polygon specified by the user.
 
 For example, if the user select sample 3, and run test case 1, 2, 3
-respectively, he/she will get the following display: 1.
-Construct\_simple\_polygon()
+respectively, he/she will get the following display: 
+1.Construct\_simple\_polygon()
 
 <img src="media/image7.PNG" width="410" height="373" />
 
@@ -96,7 +90,7 @@ multiple times on the screen and see the results. Note, the point
 location function works in all of the four sample choices. Below is an
 example:
 
-<embed src="media/image10.emf" width="241" height="231" /><embed src="media/image11.emf" width="241" height="233" />
+<img src="media/image10.PNG" width="241" height="231" /><img src="media/image11.PNG" width="241" height="233" />
 
 ### **Advanced user control**
 
@@ -129,7 +123,7 @@ Besides the GUI, the console has also shown useful information.
 -   The vertices’ coordinates of each monotone polygon to be
     triangulated
 
-    <img src="media/image12.PNG" width="290" height="98" /><img src="media/image12.PNG" width="254" height="102" />
+    <img src="media/image18.PNG" width="290" height="98" /><img src="media/image19.PNG" width="254" height="102" />
 
 -   The resulting triangulation (in terms of vertices of each face)
 
@@ -193,7 +187,7 @@ used in the project is in MyTreap.h where it implements the method to
 locate an edge directly to the left of a given vertex. The detailed
 implementation is in MyTreap.cpp.
 
-1.  The PointLocation class (in PointLocation.h and PointLocation.cpp )
+### The PointLocation class (in PointLocation.h and PointLocation.cpp )
 
 To find which triangle a given vertex lies in, a PointLocation class was
 developed. It basically uses two binary search trees, one for the slabs,
